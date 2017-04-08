@@ -1,0 +1,31 @@
+package com.underconverbg.detectophone;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+/**
+ * Created by underconverbg on 2017/4/9.
+ */
+
+public class BootReceiver extends BroadcastReceiver
+{
+    public static final String LOG_TAG = "MyBootReceiver";
+
+//    private Intent myServiceIntent;
+    private Intent phoneCallStateServiceIntent;
+
+    @Override
+    public void onReceive(Context context, Intent arg1)
+    {
+        Log.e(LOG_TAG, "-----MyBootReceiver:onReceive start");
+//        myServiceIntent  = new Intent(context, MyService.class);
+//        context.startService(myServiceIntent);
+
+        phoneCallStateServiceIntent = new Intent(context,  PhoneCallStateService.class);
+        context.startService(phoneCallStateServiceIntent);
+
+        Log.e(LOG_TAG, "-----MyBootReceiver:onReceive end");
+    }
+}
