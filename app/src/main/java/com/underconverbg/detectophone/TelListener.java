@@ -18,12 +18,11 @@ public class TelListener  extends PhoneStateListener
 {
     public static final String LOG_TAG = "TelListener";
 
-    private Context mContext;
     private  MyRecorder recorder;
 
-    public TelListener(Context context)
+    public TelListener()
     {
-        mContext = context;
+
     }
 
 
