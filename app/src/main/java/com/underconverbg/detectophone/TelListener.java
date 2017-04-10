@@ -37,15 +37,6 @@ public class TelListener  extends PhoneStateListener
                 if (recorder != null){
                     recorder.stop();
                     Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"录音停止");
-
-                    String fileName = recorder.getFileName();
-                    if (fileName != null) {
-                        Detect detect = new Detect();
-                        detect.setDatetime(recorder.getDate());
-                        detect.setCallphonenum(  recorder.getPhoneNumber());
-                        detect.setRecordfile(new File(recorder.getFileName()));
-                        UploadTools.upload(detect);
-                    }
                 }
                 break;
             case TelephonyManager.CALL_STATE_RINGING: // 来电响铃
@@ -54,12 +45,12 @@ public class TelListener  extends PhoneStateListener
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK: // 摘机，即接通
                 Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
-                recorder   = new MyRecorder(mContext,incomingNumber);
+                recorder   = new MyRecorder(incomingNumber);
                 recorder.start();
                 Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"录音开始");
                 break;
         }
 
-        Log.e("TelephoneState", String.valueOf(incomingNumber));
+//        Log.e("TelephoneState", String.valueOf(incomingNumber));
     }
 }

@@ -5,8 +5,11 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
 
+import com.underconverbg.detectophone.bean.Detect;
+import com.underconverbg.detectophone.upload.UploadTask;
 import com.underconverbg.detectophone.upload.UploadTools;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,82 +20,76 @@ import java.util.Date;
 
 public class MyRecorder
 {
-    Context mContext;
+    private String fileName;
+    private String date;
     private String phoneNumber;
+
     private MediaRecorder mrecorder;
     private boolean started = false; //录音机是否已经启动
     private boolean isCommingNumber = false;//是否是来电
-    private String TAG = "MyRecorder";
+    private String TAG = "Recorder";
 
-    public String getFileName() {
-        return fileName;
-    }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    private String fileName ;
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    private String date ;
-
-    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-
-    public MyRecorder(Context context,String phoneNumber)
-    {
-        mContext = context;
+    public MyRecorder(String phoneNumber) {
         this.setPhoneNumber(phoneNumber);
+    }
 
-        //设置sdcard的路径
-        date = phoneNumber+"Phone" + df.format(new Date());
-        //        fileName = c.getFilesDir().getPath();
-        String  fileName =  FileUnit.folderCreate(mContext);
-        this.fileName += "/"+date+".3gp";
+    public MyRecorder()
+    {
 
     }
 
-    public MyRecorder(Context context)
-    {
-        mContext = context;
-    }
-
-    public void start()
-    {
-        Log.e(TAG, "startRecorder fileName:"+fileName);
+    public void start() {
+        if (started  == true)
+        {
+            if (mrecorder != null) {
+                mrecorder.stop();
+                mrecorder.release();
+                mrecorder = null;
+            }
+        }
 
         started = true;
         mrecorder = new MediaRecorder();
 
-//        mrecorder.setAudioChannels(2);
-        mrecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);   //获得声音数据源
-        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);   // 按3gp格式输出
-        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//        mrecorder.setAudioSamplingRate(44100);
-
-        if (fileName == null)
-        {
-            return;
+        File recordPath = new File(
+                Environment.getExternalStorageDirectory()
+                , "/My record");
+        if (!recordPath.exists()) {
+            recordPath.mkdirs();
+            Log.e("recorder", "创建目录");
         }
 
-        mrecorder.setOutputFile(fileName);   //输出文件
+        String callDir = "呼出";
+        if (isCommingNumber) {
+            callDir = "呼入";
+        }
 
-        mrecorder.setOutputFile(fileName);
+        date =  new SimpleDateFormat("yy-MM-dd_HH-mm-ss")
+                .format(new Date(System.currentTimeMillis()));
 
-        try
-        {
+        fileName = callDir + "-" + phoneNumber + "-"
+                + date + ".mp3";//实际是3gp
+        File recordName = new File(recordPath, fileName);
+
+        try {
+            recordName.createNewFile();
+            Log.e("recorder", "创建文件" + recordName.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mrecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+
+        mrecorder.setOutputFile(recordName.getAbsolutePath());
+
+        try {
             mrecorder.prepare();
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG , "录音失败 Exception:"+e.getMessage());
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         mrecorder.start();
@@ -105,14 +102,30 @@ public class MyRecorder
             if (mrecorder!=null) {
                 mrecorder.stop();
                 mrecorder.release();
+                Log.e(TAG , "录音停止");
+
+                String fileName = this.fileName;
+                if (fileName != null)
+                {
+                    Log.e(TAG , "UploadTools 上传");
+
+                    Detect detect = new Detect();
+                    detect.setDatetime(this.date);
+                    detect.setCallphonenum( getPhoneNumber());
+                    detect.setRecordfile(new File(this.fileName));
+                    UploadTask task =   new UploadTask(detect);
+                    task.uploadFile();
+//                    new Thread(task).start();
+//                    UploadTools.upload(detect);
+                }
                 mrecorder = null;
             }
             started = false;
-        } catch (IllegalStateException e)
-        {
-            Log.e(TAG , "停止失败 Exception:"+e.getMessage());
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+
+
         Log.e(TAG , "录音结束");
     }
 
@@ -143,6 +156,4 @@ public class MyRecorder
     public void setIsCommingNumber(boolean isCommingNumber) {
         this.isCommingNumber = isCommingNumber;
     }
-
-
 }
