@@ -27,7 +27,8 @@ public class RecorderFactory
     public static final String LOG_TAG = "RecorderFactory";
 
     // 定义一个私有的构造方法
-    private RecorderFactory() {
+    private RecorderFactory()
+    {
     }
 
     // 将自身的实例对象设置为一个属性,并加上Static和final修饰符

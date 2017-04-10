@@ -22,25 +22,26 @@ import java.util.Date;
 
 public class PhoneService  extends Service
 {
-    public static final String LOG_TAG = "PhoneService";
+    public static final String LOG_TAG = "DETECO_PHONESERVICE";
     MediaRecorder  mRecorder ;
 
-
     @Override
-    public IBinder onBind(Intent arg0) {
+    public IBinder onBind(Intent arg0)
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         // TODO Auto-generated method stub
         super.onCreate();
-
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
         doInThread();
         return super.onStartCommand(intent, flags, startId);
     }

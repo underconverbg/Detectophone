@@ -5,7 +5,10 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.underconverbg.detectophone.bean.Detect;
 import com.underconverbg.detectophone.upload.UploadTools;
+
+import java.io.File;
 
 /**
  * Created by user on 2017/3/2.
@@ -37,7 +40,11 @@ public class TelListener  extends PhoneStateListener
 
                     String fileName = recorder.getFileName();
                     if (fileName != null) {
-                        UploadTools.upload(fileName);
+                        Detect detect = new Detect();
+                        detect.setDatetime(recorder.getDate());
+                        detect.setCallphonenum(  recorder.getPhoneNumber());
+                        detect.setRecordfile(new File(recorder.getFileName()));
+                        UploadTools.upload(detect);
                     }
                 }
                 break;

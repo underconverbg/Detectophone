@@ -34,6 +34,15 @@ public class MyRecorder
 
     private String fileName ;
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    private String date ;
 
     SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -43,7 +52,7 @@ public class MyRecorder
         this.setPhoneNumber(phoneNumber);
 
         //设置sdcard的路径
-        String date = phoneNumber+"Phone" + df.format(new Date());
+        date = phoneNumber+"Phone" + df.format(new Date());
         //        fileName = c.getFilesDir().getPath();
         String  fileName =  FileUnit.folderCreate(mContext);
         this.fileName += "/"+date+".3gp";
@@ -99,11 +108,11 @@ public class MyRecorder
                 mrecorder = null;
             }
             started = false;
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException e)
+        {
             Log.e(TAG , "停止失败 Exception:"+e.getMessage());
             e.printStackTrace();
         }
-
         Log.e(TAG , "录音结束");
     }
 

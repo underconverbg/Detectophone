@@ -15,8 +15,7 @@ public class UploadDemo
         UploadTaskManagerThread downloadTaskManagerThread = new UploadTaskManagerThread();
         new Thread(downloadTaskManagerThread).start();
 
-//        String []items=new String[]{"向晨宇1","向晨宇2","向晨宇3","向晨宇4","向晨宇5","向晨宇6","向晨宇7","向晨宇1","向晨宇2"};
-//
+
 //        for(int i=0;i<items.length;i++)
 //        {
 //            UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();

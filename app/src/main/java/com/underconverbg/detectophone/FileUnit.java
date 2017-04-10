@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class FileUnit
 {
-    public static final String LOG_TAG = "FileUnit";
+    public static final String LOG_TAG = "DETECT_FILEUNIT";
 
 //    public static String FirstFolder = Environment.getExternalStorageDirectory().getPath()+"/detectophone";//定义需要创建的根目录文件夹名字
 //    public static String SecondFolder = "SecondFolder";//定义需要创建的二级目录文件夹，根据需要进行设置

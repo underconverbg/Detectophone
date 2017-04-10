@@ -26,7 +26,8 @@ import java.io.InputStreamReader;
  *  若是 IDLE 则是处于 空闲状态
  *
  */
-public class ReadLog extends Thread {
+public class ReadLog extends Thread
+{
     private Context ctx;
     private int logCount;
 
@@ -37,7 +38,8 @@ public class ReadLog extends Thread {
      * @author sdvdxl
      *
      */
-    private static class CallViewState {
+    private static class CallViewState
+    {
         public static final String FORE_GROUND_CALL_STATE = "mForeground";
     }
 
@@ -46,7 +48,8 @@ public class ReadLog extends Thread {
      * @author sdvdxl
      *
      */
-    private static class CallState {
+    private static class CallState
+    {
         public static final String DIALING = "DIALING";
         public static final String ALERTING = "ALERTING";
         public static final String ACTIVE = "ACTIVE";
@@ -54,7 +57,8 @@ public class ReadLog extends Thread {
         public static final String DISCONNECTED = "DISCONNECTED";
     }
 
-    public ReadLog(Context ctx) {
+    public ReadLog(Context ctx)
+    {
         this.ctx = ctx;
     }
 
@@ -114,7 +118,8 @@ public class ReadLog extends Thread {
 
                 //呼叫对方 正在响铃
                 if (line.contains(ReadLog.CallViewState.FORE_GROUND_CALL_STATE)
-                        && line.contains(ReadLog.CallState.ALERTING)) {
+                        && line.contains(ReadLog.CallState.ALERTING))
+                {
                     //发送广播
                     Intent dialingIntent = new Intent();
                     dialingIntent.setAction(OutgoingCallState.ForeGroundCallState.ALERTING);
@@ -125,7 +130,8 @@ public class ReadLog extends Thread {
 
                 //已接通，通话建立
                 if (line.contains(ReadLog.CallViewState.FORE_GROUND_CALL_STATE)
-                        && line.contains(ReadLog.CallState.ACTIVE)) {
+                        && line.contains(ReadLog.CallState.ACTIVE))
+                {
                     //发送广播
                     Intent dialingIntent = new Intent();
                     dialingIntent.setAction(OutgoingCallState.ForeGroundCallState.ACTIVE);
@@ -136,7 +142,8 @@ public class ReadLog extends Thread {
 
                 //断开连接，即挂机
                 if (line.contains(ReadLog.CallViewState.FORE_GROUND_CALL_STATE)
-                        && line.contains(ReadLog.CallState.DISCONNECTED)) {
+                        && line.contains(ReadLog.CallState.DISCONNECTED))
+                {
                     //发送广播
                     Intent dialingIntent = new Intent();
                     dialingIntent.setAction(OutgoingCallState.ForeGroundCallState.DISCONNECTED);

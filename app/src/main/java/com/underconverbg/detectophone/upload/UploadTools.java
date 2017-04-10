@@ -1,5 +1,7 @@
 package com.underconverbg.detectophone.upload;
 
+import com.underconverbg.detectophone.bean.Detect;
+
 import java.io.File;
 
 /**
@@ -17,11 +19,9 @@ public  class UploadTools
     }
 
 
-    public static void upload(String fileLoad)
+    public static void upload(Detect detect)
     {
-        File file = new File(fileLoad);
-        file.getName();
-        UploadTask task =   new UploadTask(file);
+        UploadTask task =   new UploadTask(detect);
         UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
         uploadTaskMananger.addDownloadTask(task);
     }

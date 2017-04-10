@@ -19,7 +19,8 @@ public class OutgoingCallState
      * @author sdvdxl
      *
      */
-    public static final class ForeGroundCallState {
+    public static final class ForeGroundCallState
+    {
         public static final String DIALING =
                 "com.sdvdxl.phonerecorder.FORE_GROUND_DIALING";
         public static final String ALERTING =

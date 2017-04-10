@@ -10,6 +10,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.underconverbg.detectophone.system.SystemSet;
 import com.underconverbg.detectophone.upload.UploadTools;
 
 /**
@@ -30,9 +31,9 @@ public class PhoneCallStateService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        SystemSet.getIntance().init(this.getApplicationContext());
         //开启上传线程
         UploadTools.createUploadThreadAndStart();
-
         doInThread();
         return START_STICKY;
     }
@@ -65,18 +66,19 @@ public class PhoneCallStateService extends Service
         //来电
         TelephonyManager telmgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         telmgr.listen(new TelListener(PhoneCallStateService.this), PhoneStateListener.LISTEN_CALL_STATE);
-
     }
 
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent intent)
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         unregisterReceiver(outgoingCallReciver);
         Toast.makeText(this, "已关闭电话监听服务", Toast.LENGTH_LONG)

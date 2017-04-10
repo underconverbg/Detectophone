@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class BootReceiver extends BroadcastReceiver
 {
-    public static final String LOG_TAG = "MyBootReceiver";
+    public static final String LOG_TAG = "DETECT_MYBOOTRECEIVER";
 
 //    private Intent myServiceIntent;
     private Intent phoneCallStateServiceIntent;
@@ -26,6 +26,10 @@ public class BootReceiver extends BroadcastReceiver
         phoneCallStateServiceIntent = new Intent(context,  PhoneCallStateService.class);
         context.startService(phoneCallStateServiceIntent);
 
+        Intent ootStartIntent=new Intent(context,MainActivity.class);
+        ootStartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(ootStartIntent);
+        
         Log.e(LOG_TAG, "-----MyBootReceiver:onReceive end");
     }
 }

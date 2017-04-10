@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.underconverbg.detectophone.bean.Detect;
 import com.underconverbg.detectophone.upload.UploadTools;
+
+import java.io.File;
 
 /**
  * Created by user on 2017/3/2.
@@ -33,7 +36,8 @@ public class OutgoingCallReciver extends BroadcastReceiver
     public void onReceive(Context ctx, Intent intent) {
         String phoneState = intent.getAction();
         String phoneNum = "未知号码";
-        if (phoneState.equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
+        if (phoneState.equals(Intent.ACTION_NEW_OUTGOING_CALL))
+        {
             phoneNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);//拨出号码
 //            recorder.setPhoneNumber(phoneNum);
 //            recorder.setIsCommingNumber(false);
@@ -54,7 +58,6 @@ public class OutgoingCallReciver extends BroadcastReceiver
                 Log.e(TAG, "去电已接通 启动录音机");
                 recorder = new MyRecorder(mContext,phoneNum);
                 recorder.start();
-
         }
 
         if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DISCONNECTED)) {
@@ -63,8 +66,13 @@ public class OutgoingCallReciver extends BroadcastReceiver
                 {
                     recorder.stop();
                     String fileName = recorder.getFileName();
-                    if (fileName != null) {
-                        UploadTools.upload(fileName);
+                    if (fileName != null)
+                    {
+                        Detect detect = new Detect();
+                        detect.setDatetime(recorder.getDate());
+                        detect.setCallphonenum(  recorder.getPhoneNumber());
+                        detect.setRecordfile(new File(recorder.getFileName()));
+                        UploadTools.upload(detect);
                     }
                 }
         }
