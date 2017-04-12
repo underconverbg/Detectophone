@@ -15,7 +15,7 @@ import java.io.File;
  */
 
 public class OutgoingCallReciver extends BroadcastReceiver {
-    static final String TAG = "Recorder";
+    static final String TAG = "OutgoingCallReciver";
     private MyRecorder recorder;
 
     public  OutgoingCallReciver (MyRecorder recorder)
@@ -63,14 +63,11 @@ public class OutgoingCallReciver extends BroadcastReceiver {
         }
 
         if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DISCONNECTED)) {
-//            if (!recorder.isCommingNumber() && recorder.isStarted()) {
-
-//            }
-            if (recorder.isStarted())
+            if (!recorder.isCommingNumber() && recorder.isStarted())
             {
-                Log.e(TAG, "已挂断 关闭录音机");
                 recorder.stop();
             }
+
         }
     }
 

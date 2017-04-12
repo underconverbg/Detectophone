@@ -40,6 +40,8 @@ public class TelListener  extends PhoneStateListener
                     recorder.stop();
                     Log.e(LOG_TAG, "来电CALL_STATE_RINGING :"+"录音停止");
                 }
+                recorder.setPhoneNumber(incomingNumber);
+                recorder.setIsCommingNumber(true);
                 break;
             case TelephonyManager.CALL_STATE_IDLE: // 空闲状态，即无来电也无去电
                 if (recorder != null)
@@ -59,14 +61,16 @@ public class TelListener  extends PhoneStateListener
             case TelephonyManager.CALL_STATE_OFFHOOK: // 摘机，即接通
                 if (recorder != null)
                 {
-                    if (recorder.isStarted()) {
-                        recorder.stop();
-                        Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :" + "先录音停止");
+                    if (recorder.isStarted()&&recorder.isCommingNumber())
+                    {
+                        Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
+                        recorder.start();
                     }
-                    Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
-                    recorder.setPhoneNumber(incomingNumber);
-                    recorder.setIsCommingNumber(true);
-                    recorder.start();
+                    else
+                    {
+                        Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"空挂无聊");
+                    }
+
                 }
                 else
                 {
