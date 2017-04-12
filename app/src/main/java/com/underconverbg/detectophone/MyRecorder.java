@@ -30,15 +30,6 @@ public class MyRecorder
     private boolean isCommingNumber = false;//是否是来电
     private String TAG = "Recorder";
 
-    private static MyRecorder single=null;
-    //静态工厂方法
-    public static MyRecorder getInstance()
-    {
-        if (single == null) {
-            single = new MyRecorder();
-        }
-        return single;
-    }
 
     public void start()
     {
@@ -96,15 +87,15 @@ public class MyRecorder
         }
 
 
-        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        mrecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
-        mrecorder.setOutputFile(recordName.getPath());
+        mrecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);//从麦克风采集声音
+        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT); //内容输出格式
+        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);//音频编码方式
+        mrecorder.setOutputFile(recordName.getAbsolutePath());
 
         try {
             mrecorder.prepare();
             mrecorder.start();
-            started = true;
+            setStarted(true);
             Log.e(TAG , "录音开始");
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -113,12 +104,11 @@ public class MyRecorder
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("recorder", "录音开始错误IOException" + e.getMessage());
-
         }
         catch (Exception e) {
             e.printStackTrace();
+            setStarted(false);
             Log.e("recorder", "录音开始错误Exception" + e.getMessage());
-
         }
     }
 
@@ -128,6 +118,7 @@ public class MyRecorder
             {
                 mrecorder.stop();
                 mrecorder.release();
+                setStarted(false);
                 Log.e(TAG , "录音停止");
 
                 String fileName = this.fileName;
@@ -166,9 +157,9 @@ public class MyRecorder
         return started;
     }
 
-//    public void setStarted(boolean hasStarted) {
-//        this.started = hasStarted;
-//    }
+    public void setStarted(boolean hasStarted) {
+        this.started = hasStarted;
+    }
 
     public boolean isCommingNumber() {
         return isCommingNumber;

@@ -39,14 +39,18 @@ public class PhoneCallStateService extends Service
         return START_STICKY;
     }
 
+    private MyRecorder recorder;
+
     public void doInThread()
     {
+        recorder = new MyRecorder();
+
         //------以下应放在onStartCommand中，但2.3.5以下版本不会因service重新启动而重新调用--------
         //监听电话状态，如果是打入且接听 或者 打出 则开始自动录音
         //通话结束，保存文件到外部存储器上
         Log.e("Recorder", "正在监听中...");
         outgoingCallState = new OutgoingCallState(this);
-        outgoingCallReciver = new OutgoingCallReciver();
+        outgoingCallReciver = new OutgoingCallReciver(recorder);
         outgoingCallState.startListen();
 //        Toast.makeText(this, "服务已启动", Toast.LENGTH_LONG).show();
 
@@ -66,7 +70,7 @@ public class PhoneCallStateService extends Service
 
         //来电
         TelephonyManager telmgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        telmgr.listen(new TelListener(), PhoneStateListener.LISTEN_CALL_STATE);
+        telmgr.listen(new TelListener(recorder), PhoneStateListener.LISTEN_CALL_STATE);
     }
 
 
