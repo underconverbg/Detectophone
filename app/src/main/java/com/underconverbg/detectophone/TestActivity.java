@@ -12,11 +12,11 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-//        BootReceiver receiver=new BootReceiver();
-//        IntentFilter filter=new IntentFilter();
-//        filter.addAction("com.underconverbg.detectophone.BootReceiver");
-//        //注册receiver
-//        registerReceiver(receiver, filter);
+        BootReceiver receiver=new BootReceiver();
+        IntentFilter filter=new IntentFilter();
+        filter.addAction("com.underconverbg.detectophone.BootReceiver");
+        //注册receiver
+        registerReceiver(receiver, filter);
 
         Intent intent=new Intent();
         //设置Intent的Action属性

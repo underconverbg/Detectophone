@@ -33,19 +33,26 @@ public class MyRecorder
 
     public void start()
     {
-        if (started  == true)
+        if (mrecorder != null)
         {
-            if (mrecorder != null) {
-                mrecorder.stop();
-                mrecorder.release();
-                mrecorder = null;
+            mrecorder.stop();
+            mrecorder.release();
+            mrecorder = null;
+            setStarted(false);
+            setIsCommingNumber(false);
+            try {
+                Thread.sleep(20000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
             }
         }
+
         mrecorder = new MediaRecorder();
 
-        File recordPath = new File(
-                Environment.getExternalStorageDirectory()
-                , "/detectophone");
+        File recordPath = new File(Environment.getExternalStorageDirectory()
+                , "/mydetectophone");
         if (!recordPath.exists()) {
             recordPath.mkdirs();
             Log.e("recorder", "创建目录");
@@ -54,9 +61,12 @@ public class MyRecorder
             recordPath.delete();
             recordPath.mkdirs();
         }
-        else{
+        else
+        {
             //you can't access there with write permission.
             //Try other way.
+            recordPath.delete();
+            recordPath.mkdirs();
         }
 
         String callDir = "out";
@@ -119,6 +129,8 @@ public class MyRecorder
                 mrecorder.stop();
                 mrecorder.release();
                 setStarted(false);
+                setIsCommingNumber(false);
+
                 Log.e(TAG , "录音停止");
 
                 String fileName = this.fileName;
