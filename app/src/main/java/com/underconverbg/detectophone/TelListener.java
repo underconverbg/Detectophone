@@ -61,7 +61,7 @@ public class TelListener  extends PhoneStateListener
             case TelephonyManager.CALL_STATE_OFFHOOK: // 摘机，即接通
                 if (recorder != null)
                 {
-                    if (recorder.isStarted()&&recorder.isCommingNumber())
+                    if (!recorder.isStarted()&&recorder.isCommingNumber())
                     {
                         Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
                         recorder.start();
