@@ -12,16 +12,6 @@ public class Detect
 {
     String userid;
     String phonenum;
-    String callphonenum;
-    String datetime;
-    File recordfile;
-
-    public  Detect()
-    {
-        userid = SystemSet.getIntance().getDeviceid();
-        phonenum = SystemSet.getIntance().getTel();
-    };
-
 
     @Override
     public String toString() {
@@ -33,6 +23,17 @@ public class Detect
                 ", recordfile=" + recordfile +
                 '}';
     }
+
+    String callphonenum;
+    String datetime;
+    File recordfile;
+
+    public  Detect()
+    {
+        userid = SystemSet.getIntance().getDeviceid();
+        phonenum = SystemSet.getIntance().getTel();
+    };
+
 
     public String getUserid() {
         return userid;

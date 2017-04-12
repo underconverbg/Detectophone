@@ -19,7 +19,7 @@ public class OutgoingCallReciver extends BroadcastReceiver {
     private MyRecorder recorder;
 
     public OutgoingCallReciver() {
-        recorder = new MyRecorder();
+        recorder = MyRecorder.getInstance();
     }
 
     public  OutgoingCallReciver (MyRecorder recorder) {
@@ -47,18 +47,17 @@ public class OutgoingCallReciver extends BroadcastReceiver {
         }
 
         if (phoneState.equals(OutgoingCallState.ForeGroundCallState.ACTIVE)) {
-            if (!recorder.isCommingNumber() && !recorder.isStarted()) {
+//            if (!recorder.isCommingNumber() && !recorder.isStarted()) {
                 Log.e(TAG, "去电已接通 启动录音机");
                 recorder.start();
-
-            }
+//            }
         }
 
         if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DISCONNECTED)) {
-            if (!recorder.isCommingNumber() && recorder.isStarted()) {
+//            if (!recorder.isCommingNumber() && recorder.isStarted()) {
                 Log.e(TAG, "已挂断 关闭录音机");
                 recorder.stop();
-            }
+//            }
         }
     }
 

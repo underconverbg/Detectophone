@@ -35,6 +35,7 @@ public class UploadTaskManagerThread  implements Runnable
             UploadTask uploadTask = uploadTaskManager.getUploadTask();
             if (uploadTask != null)
             {
+                System.out.println("pool.execute");
                 pool.execute(uploadTask);
             }
             else
@@ -53,6 +54,7 @@ public class UploadTaskManagerThread  implements Runnable
         }
         if (isStop)
         {
+            System.out.println("轮询结束");
             pool.shutdown();
         }
     }

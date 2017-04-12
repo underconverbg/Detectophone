@@ -42,6 +42,7 @@ public class UploadTaskManager
             {
                 // 增加下载任务
                 uploadTasks.addLast(uploadTask);
+                System.out.println("添加至队列");
             }
         }
     }

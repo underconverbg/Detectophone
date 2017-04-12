@@ -27,26 +27,31 @@ public class TelListener  extends PhoneStateListener
 
 
     @Override
-    public void onCallStateChanged(int state, String incomingNumber) {
+    public void onCallStateChanged(int state, String incomingNumber)
+    {
         super.onCallStateChanged(state, incomingNumber);
+        Log.e("TAG","state"+state);
 
         switch (state) {
-            case TelephonyManager.CALL_STATE_IDLE: // 空闲状态，即无来电也无去电
-                Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"挂断电话");
-                if (recorder != null){
-                    recorder.stop();
-                    Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"录音停止");
-                }
-                break;
             case TelephonyManager.CALL_STATE_RINGING: // 来电响铃
                 Log.e(LOG_TAG, "CALL_STATE_RINGING :"+"来电");
-                //此处添加一系列功能代码
+                if (recorder != null){
+                    recorder.stop();
+                    Log.e(LOG_TAG, "CALL_STATE_RINGING :"+"录音停止");
+                }
                 break;
+            case TelephonyManager.CALL_STATE_IDLE: // 空闲状态，即无来电也无去电
+                Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"挂断电话");
+                recorder   = MyRecorder.getInstance();
+                recorder.stop();
+                Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"录音停止");
+                break;
+
             case TelephonyManager.CALL_STATE_OFFHOOK: // 摘机，即接通
                 Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
-                recorder   = new MyRecorder(incomingNumber);
+                recorder.setPhoneNumber(incomingNumber);
+                recorder.setIsCommingNumber(true);
                 recorder.start();
-                Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"录音开始");
                 break;
         }
 

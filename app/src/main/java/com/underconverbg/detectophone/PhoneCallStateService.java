@@ -34,7 +34,6 @@ public class PhoneCallStateService extends Service
         SystemSet.getIntance().init(this.getApplicationContext());
         //开启上传线程
         Log.e("Service", "onStartCommand...");
-
         UploadTools.createUploadThreadAndStart();
         doInThread();
         return START_STICKY;
@@ -67,7 +66,7 @@ public class PhoneCallStateService extends Service
 
         //来电
         TelephonyManager telmgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        telmgr.listen(new TelListener(PhoneCallStateService.this), PhoneStateListener.LISTEN_CALL_STATE);
+        telmgr.listen(new TelListener(), PhoneStateListener.LISTEN_CALL_STATE);
     }
 
 

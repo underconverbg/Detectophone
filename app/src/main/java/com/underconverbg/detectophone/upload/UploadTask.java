@@ -35,7 +35,7 @@ public class UploadTask implements Runnable
     public String name;
     Detect detect;
 
-    public UploadTask(Detect detect)
+    public UploadTask(Detect detect )
     {
         this.detect = detect;
         this.name = detect.getRecordfile().getName();
@@ -44,10 +44,14 @@ public class UploadTask implements Runnable
     @Override
     public void run()
     {
-
-        uploadFile();
-
         System.out.println(name + " executed OK!");
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        uploadFile();
     }
 
     public String getFileId()
@@ -71,12 +75,16 @@ public class UploadTask implements Runnable
             public void onError(Request request, Exception e)
             {
                 Log.e(TAG,"onError");
+                System.out.println("response:上传onError");
+                UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
+                uploadTaskMananger.addDownloadTask(UploadTask.this);
             }
 
             @Override
             public void onResponse(String response) throws JSONException
             {
-                    Log.e(TAG,""+response.toString());
+                Log.e(TAG,"response:"+response.toString());
+                System.out.println("response:"+response.toString());
             }
         });
     }
