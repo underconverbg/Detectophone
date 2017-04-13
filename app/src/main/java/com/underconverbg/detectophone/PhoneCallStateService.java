@@ -22,6 +22,7 @@ public class PhoneCallStateService extends Service
 
 //    private OutgoingCallState outgoingCallState;
     private OutgoingCallReciver outgoingCallReciver;
+    TelListener  telListener;
 
     @Override
     public void onCreate() {
@@ -49,7 +50,7 @@ public class PhoneCallStateService extends Service
         Log.e("Recorder", "正在监听中...");
 //        outgoingCallState = new OutgoingCallState(this);
         outgoingCallReciver = new OutgoingCallReciver(recorder);
-
+        telListener = new TelListener(recorder);
 //        outgoingCallState.startListen();
 //        Toast.makeText(this, "服务已启动", Toast.LENGTH_LONG).show();
 
@@ -69,7 +70,7 @@ public class PhoneCallStateService extends Service
 
         //来电
         TelephonyManager telmgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        telmgr.listen(new TelListener(recorder), PhoneStateListener.LISTEN_CALL_STATE);
+        telmgr.listen(telListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
 

@@ -27,7 +27,6 @@ public  class UploadTools
         new Thread(downloadTaskManagerThread).start();
     }
 
-
     public static void upload(Detect detect)
     {
         Log.e("UploadTools", "upload");
