@@ -14,7 +14,6 @@ import java.io.File;
  * Created by user on 2017/3/2.
  */
 
-@Deprecated
 public class TelListener  extends PhoneStateListener
 {
     public static final String LOG_TAG = "TelListener";
