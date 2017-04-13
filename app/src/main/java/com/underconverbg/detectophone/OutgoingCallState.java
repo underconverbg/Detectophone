@@ -7,6 +7,7 @@ import android.util.Log;
  * Created by user on 2017/3/2.
  */
 
+@Deprecated
 public class OutgoingCallState
 {
     Context ctx;
@@ -22,23 +23,25 @@ public class OutgoingCallState
     public static final class ForeGroundCallState
     {
         public static final String DIALING =
-                "com.sdvdxl.phonerecorder.FORE_GROUND_DIALING";
+                "com.underconverbg.detectophone.FORE_GROUND_DIALING";
         public static final String ALERTING =
-                "com.sdvdxl.phonerecorder.FORE_GROUND_ALERTING";
+                "com.underconverbg.detectophone.FORE_GROUND_ALERTING";
         public static final String ACTIVE =
-                "com.sdvdxl.phonerecorder.FORE_GROUND_ACTIVE";
+                "com.underconverbg.detectophone.FORE_GROUND_ACTIVE";
         public static final String IDLE =
-                "com.sdvdxl.phonerecorder.FORE_GROUND_IDLE";
+                "com.underconverbg.detectophone.FORE_GROUND_IDLE";
         public static final String DISCONNECTED =
-                "com.sdvdxl.phonerecorder.FORE_GROUND_DISCONNECTED";
+                "com.underconverbg.detectophone.FORE_GROUND_DISCONNECTED";
     }
 
     /**
      * 开始监听呼出状态的转变，
      * 并在对应状态发送广播
      */
-    public void startListen() {
+    public void startListen()
+    {
         new ReadLog(ctx).start();
         Log.e("Recorder", "开始监听呼出状态的转变，并在对应状态发送广播");
     }
+
 }

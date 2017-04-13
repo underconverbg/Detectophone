@@ -7,6 +7,7 @@ import android.util.Log;
  * Created by user on 2017/3/2.
  */
 
+@Deprecated
 public class UPlayer implements IVoiceManager {
 
     private final String TAG = UPlayer.class.getName();

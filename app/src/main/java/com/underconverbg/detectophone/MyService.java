@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //测试用的
+@Deprecated
 public class MyService extends Service
 {
     public static final String LOG_TAG = "MyService";

@@ -10,6 +10,7 @@ import okhttp3.Response;
  * Created by user on 2017/4/10.
  */
 
+@Deprecated
 public abstract class ServerCallBack  extends Callback<String>
 {
     @Override

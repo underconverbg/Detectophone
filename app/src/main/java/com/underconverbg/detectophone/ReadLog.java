@@ -26,6 +26,8 @@ import java.io.InputStreamReader;
  *  若是 IDLE 则是处于 空闲状态
  *
  */
+
+@Deprecated
 public class ReadLog extends Thread
 {
     private Context ctx;

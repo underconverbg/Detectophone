@@ -23,8 +23,11 @@ public class BootReceiver extends BroadcastReceiver
 //        myServiceIntent  = new Intent(context, MyService.class);
 //        context.startService(myServiceIntent);
 
-        phoneCallStateServiceIntent = new Intent(context,  PhoneCallStateService.class);
-        context.startService(phoneCallStateServiceIntent);
+        if (phoneCallStateServiceIntent == null)
+        {
+            phoneCallStateServiceIntent = new Intent(context, PhoneCallStateService.class);
+            context.startService(phoneCallStateServiceIntent);
+        }
 
 //        Intent ootStartIntent=new Intent(context,MainActivity.class);
 //        ootStartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

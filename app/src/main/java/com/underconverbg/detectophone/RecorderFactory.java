@@ -18,6 +18,7 @@ import java.util.List;
  * Created by user on 2017/3/1.
  */
 
+@Deprecated
 public class RecorderFactory
 {
     public static int  TYPE_VOICE_CALL = 0;

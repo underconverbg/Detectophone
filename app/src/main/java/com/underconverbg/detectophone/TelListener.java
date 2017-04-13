@@ -14,11 +14,14 @@ import java.io.File;
  * Created by user on 2017/3/2.
  */
 
+@Deprecated
 public class TelListener  extends PhoneStateListener
 {
     public static final String LOG_TAG = "TelListener";
 
     private  MyRecorder recorder;
+    boolean isStart = false;
+
 
     public TelListener(MyRecorder recorder)
     {
@@ -30,7 +33,7 @@ public class TelListener  extends PhoneStateListener
     public void onCallStateChanged(int state, String incomingNumber)
     {
         super.onCallStateChanged(state, incomingNumber);
-        Log.e("TAG","state"+state);
+
 
         switch (state) {
             case TelephonyManager.CALL_STATE_RINGING: // 来电响铃
@@ -46,9 +49,10 @@ public class TelListener  extends PhoneStateListener
             case TelephonyManager.CALL_STATE_IDLE: // 空闲状态，即无来电也无去电
                 if (recorder != null)
                 {
-                    if (recorder.isStarted()&&recorder.isCommingNumber())
+                    if (isStart)
                     {
                         recorder.stop();
+                        isStart = false;
                         Log.e(LOG_TAG, "CALL_STATE_IDLE :" + "录音停止");
                     }
                     else
@@ -61,16 +65,16 @@ public class TelListener  extends PhoneStateListener
             case TelephonyManager.CALL_STATE_OFFHOOK: // 摘机，即接通
                 if (recorder != null)
                 {
-                    if (!recorder.isStarted()&&recorder.isCommingNumber())
+                    if (!isStart)
                     {
                         Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
                         recorder.start();
+                        isStart = true;
                     }
                     else
                     {
                         Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"空挂无聊");
                     }
-
                 }
                 else
                 {

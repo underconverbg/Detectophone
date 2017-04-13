@@ -24,51 +24,41 @@ public class OutgoingCallReciver extends BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(Context ctx, Intent intent) {
+    public void onReceive(Context ctx, Intent intent)
+    {
         String phoneState = intent.getAction();
-
+        Log.e(TAG, "广播接收者的Action："+phoneState);
         if (phoneState.equals(Intent.ACTION_NEW_OUTGOING_CALL))
         {
             String phoneNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);//拨出号码
-            if (recorder != null)
-            {
-                recorder.setPhoneNumber(phoneNum);
-                recorder.setIsCommingNumber(false);
-                Log.e(TAG, "设置为去电状态");
-                Log.e(TAG, "去电状态 呼叫：" + phoneNum);
-            }
+            recorder.setPhoneNumber(phoneNum);
+            recorder.setIsCommingNumber(false);
+            Log.e(TAG, "设置为去电状态");
+            Log.e(TAG, "去电状态 呼叫：" + phoneNum);
         }
 
-        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DIALING))
-        {
-            Log.e(TAG, "正在拨号...");
-        }
-
-        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.ALERTING)) {
-            Log.e(TAG, "正在呼叫...");
-        }
-
-        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.ACTIVE))
-        {
-            if (recorder != null) {
-                if (!recorder.isCommingNumber() && !recorder.isStarted())
-                {
-                    if (!recorder.isStarted()) {
-                        Log.e(TAG, "去电已接通 启动录音机");
-                        recorder.start();
-                    }
-                }
-            }
-
-        }
-
-        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DISCONNECTED)) {
-            if (!recorder.isCommingNumber() && recorder.isStarted())
-            {
-                recorder.stop();
-            }
-
-        }
+//        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DIALING)) {
+//            Log.e(TAG, "正在拨号...");
+//        }
+//
+//        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.ALERTING)) {
+//            Log.e(TAG, "正在呼叫...");
+//        }
+//
+//        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.ACTIVE)) {
+//            if (!recorder.isCommingNumber() && !recorder.isStarted())
+//            {
+//                Log.e(TAG, "去电已接通 启动录音机");
+//                recorder.start();
+//            }
+//        }
+//
+//        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DISCONNECTED)) {
+//            if (!recorder.isCommingNumber() && recorder.isStarted()) {
+//                Log.e(TAG, "已挂断 关闭录音机");
+//                recorder.stop();
+//            }
+//        }
     }
 
 }

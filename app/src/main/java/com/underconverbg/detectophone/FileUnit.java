@@ -11,6 +11,7 @@ import java.io.IOException;
  * Created by user on 2017/3/2.
  */
 
+@Deprecated
 public class FileUnit
 {
     public static final String LOG_TAG = "DETECT_FILEUNIT";
