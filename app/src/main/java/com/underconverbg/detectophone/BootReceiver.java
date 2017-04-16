@@ -20,12 +20,18 @@ public class BootReceiver extends BroadcastReceiver
     public void onReceive(Context context, Intent arg1)
     {
         Log.e(LOG_TAG, "-----MyBootReceiver:onReceive start");
+
+        Log.e(LOG_TAG, arg1.getAction());
 //        myServiceIntent  = new Intent(context, MyService.class);
 //        context.startService(myServiceIntent);
 
         if (phoneCallStateServiceIntent == null)
         {
             phoneCallStateServiceIntent = new Intent(context, PhoneCallStateService.class);
+            context.startService(phoneCallStateServiceIntent);
+        }
+        if (phoneCallStateServiceIntent != null)
+        {
             context.startService(phoneCallStateServiceIntent);
         }
 //        Intent ootStartIntent=new Intent(context,MainActivity.class);

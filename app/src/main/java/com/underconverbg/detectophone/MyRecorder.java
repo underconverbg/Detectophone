@@ -63,6 +63,16 @@ public class MyRecorder
         File recordFile = new File(recordPath, accName);
 
         mrecorder = new MediaRecorder();
+
+        try {
+            mrecorder.stop();
+            mrecorder.release();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.e("recorder", "录音开始停止错误IllegalStateException" + e.getMessage());
+        }
+
         //2.指定录音机的声音源
         mrecorder.setAudioSource(
                 MediaRecorder.AudioSource.MIC|MediaRecorder.AudioSource.VOICE_CALL|
@@ -126,8 +136,10 @@ public class MyRecorder
                 }
                 mrecorder = null;
             }
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException e)
+        {
             Log.e(TAG , "录音错误结束");
+            mrecorder = null;
             e.printStackTrace();
         }
 

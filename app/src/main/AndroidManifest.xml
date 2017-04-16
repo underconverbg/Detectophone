@@ -21,6 +21,7 @@
     <!-- 自启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -30,11 +31,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".TestActivity">
-            <intent-filter>
+        <activity android:name=".TestActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="install_and_start"/>
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+
             </intent-filter>
         </activity>
 
@@ -50,7 +53,7 @@
         <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="com.underconverbg.detectophone.BootReceiver" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
