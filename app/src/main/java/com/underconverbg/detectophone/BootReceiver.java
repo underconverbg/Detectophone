@@ -39,7 +39,8 @@ public class BootReceiver extends BroadcastReceiver
 //        Intent ootStartIntent=new Intent(context,MainActivity.class);
 //        ootStartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(ootStartIntent);
-        
+        context.startService(new Intent(context, PhoneCallStateService.class));
+
         Log.e(LOG_TAG, "-----MyBootReceiver:onReceive end");
     }
 }

@@ -69,28 +69,32 @@ public class UploadTask implements Runnable
         params.put("datetime", detect.getDatetime());
         Log.e("TAG",params.toString());
         File file = detect.getRecordfile();
-        if(file == null)
-        {
-            return;
-        }
-        OkHttpUtils.post().url(url).params(params).addFile("recordfile", file.getName(),file).build().execute(new ServerCallBack()
-        {
-            @Override
-            public void onError(Request request, Exception e)
-            {
-                Log.e(TAG,"onError");
-                System.out.println("response:上传onError");
-                UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
-                uploadTaskMananger.addDownloadTask(UploadTask.this);
-            }
 
-            @Override
-            public void onResponse(String response) throws JSONException
+        try {
+            OkHttpUtils.post().url(url).params(params).addFile("recordfile", file.getName(),file).build().execute(new ServerCallBack()
             {
-                Log.e(TAG,"response:"+response.toString());
-                System.out.println("response:"+response.toString());
-            }
-        });
+                @Override
+                public void onError(Request request, Exception e)
+                {
+                    Log.e(TAG,"onError");
+                    System.out.println("response:上传onError");
+                    UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
+                    uploadTaskMananger.addDownloadTask(UploadTask.this);
+                }
+
+                @Override
+                public void onResponse(String response) throws JSONException
+                {
+                    Log.e(TAG,"response:"+response.toString());
+                    System.out.println("response:"+response.toString());
+                }
+            });
+        }
+        catch (Exception e)
+        {
+
+        }
+
     }
 
 //    private void uploadFile()

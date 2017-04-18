@@ -1,5 +1,7 @@
 package com.underconverbg.detectophone;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
@@ -59,7 +61,7 @@ public class MyRecorder
                 .format(new Date(System.currentTimeMillis()));
 
         String accName = callDir + "-" + phoneNumber + "-"
-                + date + ".aac";//实际是3gp
+                + date + ".3gp";//实际是3gp
         File recordFile = new File(recordPath, accName);
 
         mrecorder = new MediaRecorder();
@@ -73,23 +75,15 @@ public class MyRecorder
             Log.e("recorder", "录音开始停止错误IllegalStateException" + e.getMessage());
         }
 
-        //2.指定录音机的声音源
-        mrecorder.setAudioSource(
-                MediaRecorder.AudioSource.MIC|MediaRecorder.AudioSource.VOICE_CALL|
-                        MediaRecorder.AudioSource.DEFAULT|MediaRecorder.AudioSource.CAMCORDER
-                        |MediaRecorder.AudioSource.VOICE_UPLINK|MediaRecorder.AudioSource.VOICE_DOWNLINK
-        );
-
-        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+        mrecorder.setAudioChannels(2);
+        mrecorder.setAudioSource(MediaRecorder.AudioSource.MIC);   //获得声音数据源
+        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);   // 按3gp格式输出
+        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mrecorder.setAudioSamplingRate(44100);
 
         filePath = recordFile.getAbsolutePath();
         mrecorder.setOutputFile(filePath);
 
-        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        //设置所录制的声音的编码位率。
-        mrecorder.setAudioEncodingBitRate(16);
-        //设置所录制的声音的采样率。
-        mrecorder.setAudioSamplingRate(44100);
 
 
         try {
