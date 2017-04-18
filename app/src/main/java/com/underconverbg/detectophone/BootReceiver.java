@@ -9,6 +9,7 @@ import android.util.Log;
  * Created by underconverbg on 2017/4/9.
  */
 
+@Deprecated
 public class BootReceiver extends BroadcastReceiver
 {
     public static final String LOG_TAG = "DETECT_MYBOOTRECEIVER";
@@ -25,15 +26,16 @@ public class BootReceiver extends BroadcastReceiver
 //        myServiceIntent  = new Intent(context, MyService.class);
 //        context.startService(myServiceIntent);
 
-        if (phoneCallStateServiceIntent == null)
-        {
-            phoneCallStateServiceIntent = new Intent(context, PhoneCallStateService.class);
-            context.startService(phoneCallStateServiceIntent);
-        }
-        if (phoneCallStateServiceIntent != null)
-        {
-            context.startService(phoneCallStateServiceIntent);
-        }
+//        if (phoneCallStateServiceIntent == null)
+//        {
+//            phoneCallStateServiceIntent = new Intent(context, PhoneCallStateService.class);
+//            context.startService(phoneCallStateServiceIntent);
+//        }else
+//        {
+//            context.startService(phoneCallStateServiceIntent);
+//        }
+
+
 //        Intent ootStartIntent=new Intent(context,MainActivity.class);
 //        ootStartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(ootStartIntent);

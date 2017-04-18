@@ -1,1 +1,1 @@
-include ':app', ':okhttputils'
+include ':app', ':okhttputils', ':library', ':LibMarsdaemon'

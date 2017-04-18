@@ -69,6 +69,10 @@ public class UploadTask implements Runnable
         params.put("datetime", detect.getDatetime());
         Log.e("TAG",params.toString());
         File file = detect.getRecordfile();
+        if(file == null)
+        {
+            return;
+        }
         OkHttpUtils.post().url(url).params(params).addFile("recordfile", file.getName(),file).build().execute(new ServerCallBack()
         {
             @Override

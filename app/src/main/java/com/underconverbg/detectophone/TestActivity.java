@@ -10,7 +10,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+
+import junit.framework.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,13 +124,15 @@ public class TestActivity extends AppCompatActivity {
 
     private void insertDummyContact()
     {
-        Intent intent = new Intent();
-        //设置Intent的Action属性
-        intent.setAction("com.underconverbg.detectophone.BootReceiver");
-        //如果只传一个bundle的信息，可以不包bundle，直接放在intent里
-        //发送广播
-        sendBroadcast(intent);
+//        Intent intent = new Intent();
+//        //设置Intent的Action属性
+//        intent.setAction("com.underconverbg.detectophone.BootReceiver");
+//        //如果只传一个bundle的信息，可以不包bundle，直接放在intent里
+//        //发送广播
+//        sendBroadcast(intent);
 
 //        finish();
+        Log.e("~~~~","insertDummyContact");
+        startService(new Intent(TestActivity.this, PhoneCallStateService.class));
     }
 }
