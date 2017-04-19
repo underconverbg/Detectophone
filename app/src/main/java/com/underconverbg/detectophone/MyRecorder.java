@@ -82,7 +82,13 @@ public class MyRecorder
 
         filePath = recordFile.getAbsolutePath();
 
-        mrecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mrecorder.setAudioSource(
+                MediaRecorder.AudioSource.MIC|MediaRecorder.AudioSource.VOICE_CALL|
+                        MediaRecorder.AudioSource.DEFAULT|MediaRecorder.AudioSource.CAMCORDER
+                        |MediaRecorder.AudioSource.VOICE_UPLINK|MediaRecorder.AudioSource.VOICE_DOWNLINK
+
+        );
+
         mrecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         //设置所录制的声音的编码位率。
