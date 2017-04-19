@@ -14,6 +14,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.media.MediaRecorder.AudioSource.DEFAULT;
+import static android.media.MediaRecorder.AudioSource.MIC;
+import static android.media.MediaRecorder.AudioSource.VOICE_CALL;
+import static android.media.MediaRecorder.AudioSource.VOICE_UPLINK;
+
 /**
  * Created by user on 2017/3/2.
  */
@@ -75,15 +80,16 @@ public class MyRecorder
             Log.e("recorder", "录音开始停止错误IllegalStateException" + e.getMessage());
         }
 
-        mrecorder.setAudioChannels(2);
-        mrecorder.setAudioSource(MediaRecorder.AudioSource.MIC);   //获得声音数据源
-        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);   // 按3gp格式输出
-        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mrecorder.setAudioSamplingRate(44100);
-
         filePath = recordFile.getAbsolutePath();
-        mrecorder.setOutputFile(filePath);
 
+        mrecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mrecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        //设置所录制的声音的编码位率。
+        mrecorder.setAudioEncodingBitRate(16);
+        //设置所录制的声音的采样率。
+        mrecorder.setAudioSamplingRate(44100);
+        mrecorder.setOutputFile(filePath);
 
 
         try {

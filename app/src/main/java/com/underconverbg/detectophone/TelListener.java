@@ -19,6 +19,8 @@ public class TelListener  extends PhoneStateListener
     public static final String LOG_TAG = "TelListener";
 
     private  MyRecorder recorder;
+    private  MyRecorder2 recorder2;
+
     boolean isStart = false;
 
 
@@ -44,6 +46,7 @@ public class TelListener  extends PhoneStateListener
                 }
                 recorder.setPhoneNumber(incomingNumber);
                 recorder.setIsCommingNumber(true);
+
                 break;
             case TelephonyManager.CALL_STATE_IDLE: // 空闲状态，即无来电也无去电
                 if (recorder != null)
@@ -59,6 +62,7 @@ public class TelListener  extends PhoneStateListener
                         Log.e(LOG_TAG, "CALL_STATE_IDLE :"+"空挂无聊");
                     }
                 }
+
                 break;
 
             case TelephonyManager.CALL_STATE_OFFHOOK: // 摘机，即接通
@@ -79,6 +83,7 @@ public class TelListener  extends PhoneStateListener
                 {
                     Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :" + "recorder为空");
                 }
+
                 break;
         }
 
