@@ -13,7 +13,10 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+
+import junit.framework.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +59,9 @@ public class TestActivity extends AppCompatActivity {
         if (!addPermission(permissionsList, Manifest.permission.RECORD_AUDIO))
             permissionsNeeded.add("RECORD_AUDIO");
         if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            permissionsNeeded.add("Write Contacts");
+            permissionsNeeded.add("WRITE_CONTACTS");
+        if (!addPermission(permissionsList, Manifest.permission.RECEIVE_BOOT_COMPLETED))
+            permissionsNeeded.add("RECEIVE_BOOT_COMPLETED");
 
         if (permissionsList.size() > 0) {
             if (permissionsNeeded.size() > 0)
@@ -68,7 +73,6 @@ public class TestActivity extends AppCompatActivity {
                             {
                                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
                                         REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-
                             }
                         });
 //                return;
@@ -109,13 +113,18 @@ public class TestActivity extends AppCompatActivity {
                 perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.RECEIVE_BOOT_COMPLETED, PackageManager.PERMISSION_GRANTED);
+
                 // Fill with results
                 for (int i = 0; i < permissions.length; i++)
                     perms.put(permissions[i], grantResults[i]);
                 // Check for ACCESS_FINE_LOCATION
                 if (perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
-                        && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.RECEIVE_BOOT_COMPLETED) == PackageManager.PERMISSION_GRANTED
+                        )
+                {
                     // All Permissions Granted
                     insertDummyContact();
                 }
@@ -134,13 +143,15 @@ public class TestActivity extends AppCompatActivity {
 
     private void insertDummyContact()
     {
-        Intent intent = new Intent();
-        //设置Intent的Action属性
-        intent.setAction("com.underconverbg.detectophone.BootReceiver");
-        //如果只传一个bundle的信息，可以不包bundle，直接放在intent里
-        //发送广播
-        sendBroadcast(intent);
+//        Intent intent = new Intent();
+//        //设置Intent的Action属性
+//        intent.setAction("com.underconverbg.detectophone.BootReceiver");
+//        //如果只传一个bundle的信息，可以不包bundle，直接放在intent里
+//        //发送广播
+//        sendBroadcast(intent);
 
 //        finish();
+        Log.e("~~~~","insertDummyContact");
+        startService(new Intent(TestActivity.this, PhoneCallStateService.class));
     }
 }
