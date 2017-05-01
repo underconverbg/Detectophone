@@ -37,13 +37,6 @@ public class PhoneCallStateService extends Service
         doInThread();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-
-        return START_NOT_STICKY;
-    }
-
     public void doInThread()
     {
         MyRecorder  recorder = new MyRecorder();

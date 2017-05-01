@@ -57,6 +57,9 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+
             </intent-filter>
             <!-->
              <intent-filter>
@@ -77,19 +80,10 @@
             <-->
         </receiver>
 
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".PhoneService"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".PhoneCallStateService"
-            android:enabled="true"
-            android:exported="true" />
-
+        <service android:name=".PhoneCallStateService" android:process=":process1"/>
+        <receiver android:name=".Receiver1" android:process=":process1"/>
+        <service android:name=".Service2" android:process=":process2"/>
+        <receiver android:name=".Receiver2" android:process=":process2"/>
 
     </application>
 

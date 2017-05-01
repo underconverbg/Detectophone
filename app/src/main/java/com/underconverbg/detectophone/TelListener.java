@@ -17,7 +17,6 @@ import java.io.File;
 public class TelListener  extends PhoneStateListener
 {
     public static final String LOG_TAG = "TelListener";
-
     private  MyRecorder recorder;
     boolean isStart = false;
 
@@ -67,6 +66,7 @@ public class TelListener  extends PhoneStateListener
                     if (!isStart)
                     {
                         Log.e(LOG_TAG, "CALL_STATE_OFFHOOK :"+"接通电话");
+
                         recorder.start();
                         isStart = true;
                     }

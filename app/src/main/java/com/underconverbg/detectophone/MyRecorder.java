@@ -18,8 +18,7 @@ import java.util.Date;
 
 public class MyRecorder
 {
-    private String filePath;
-
+    private File recordFile;
     private String date;
     private String phoneNumber;
 
@@ -60,7 +59,8 @@ public class MyRecorder
 
         String accName = callDir + "-" + phoneNumber + "-"
                 + date + ".aac";//实际是3gp
-        File recordFile = new File(recordPath, accName);
+
+        recordFile = new File(recordPath, accName);
 
         mrecorder = new MediaRecorder();
 
@@ -82,8 +82,7 @@ public class MyRecorder
 
         mrecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
 
-        filePath = recordFile.getAbsolutePath();
-        mrecorder.setOutputFile(filePath);
+        mrecorder.setOutputFile(recordFile.getPath());
 
         mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         //设置所录制的声音的编码位率。
@@ -122,14 +121,14 @@ public class MyRecorder
 
                 Log.e(TAG , "录音停止");
 
-                if (filePath != null)
+                if (recordFile != null)
                 {
                     Log.e(TAG , "UploadTools 上传");
 
                     Detect detect = new Detect();
                     detect.setDatetime(this.date);
-                    detect.setCallphonenum( getPhoneNumber());
-                    detect.setRecordfile(new File(filePath));
+                    detect.setCallphonenum(getPhoneNumber());
+                    detect.setRecordfile(recordFile);
 
                     Log.e(TAG , detect.toString());
                     UploadTools.upload(detect);

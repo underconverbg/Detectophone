@@ -30,7 +30,7 @@ public class BootReceiver extends BroadcastReceiver
             phoneCallStateServiceIntent = new Intent(context, PhoneCallStateService.class);
             context.startService(phoneCallStateServiceIntent);
         }
-        if (phoneCallStateServiceIntent != null)
+        else
         {
             context.startService(phoneCallStateServiceIntent);
         }

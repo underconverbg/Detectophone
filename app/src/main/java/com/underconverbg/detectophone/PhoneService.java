@@ -20,6 +20,7 @@ import java.util.Date;
  * Created by user on 2017/3/2.
  */
 
+@Deprecated
 public class PhoneService  extends Service
 {
     public static final String LOG_TAG = "DETECO_PHONESERVICE";

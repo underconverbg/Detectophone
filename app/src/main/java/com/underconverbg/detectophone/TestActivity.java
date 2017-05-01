@@ -4,9 +4,12 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +28,16 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        insertDummyContactWrapper();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                insertDummyContactWrapper();
+        }
+        else
+        {
+            insertDummyContact();
+        }
+
+
 //        BootReceiver receiver=new BootReceiver();
 //        IntentFilter filter=new IntentFilter();
 //        filter.addAction("com.underconverbg.detectophone.BootReceiver");
@@ -67,7 +79,8 @@ public class TestActivity extends AppCompatActivity {
         insertDummyContact();
     }
 
-    private boolean addPermission(List<String> permissionsList, String permission) {
+    private boolean addPermission(List<String> permissionsList, String permission)
+    {
         if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
             permissionsList.add(permission);
             // Check for Rationale Option

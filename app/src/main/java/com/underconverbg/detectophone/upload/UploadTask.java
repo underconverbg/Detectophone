@@ -35,7 +35,7 @@ public class UploadTask implements Runnable
     public String name;
     Detect detect;
 
-    public UploadTask(Detect detect )
+    public UploadTask(Detect detect)
     {
         this.detect = detect;
         this.name = detect.getRecordfile().getName();
@@ -47,11 +47,11 @@ public class UploadTask implements Runnable
         System.out.println(name + " executed OK!");
         try {
             Thread.sleep(30000);
+            uploadFile();
         } catch (InterruptedException e)
         {
             e.printStackTrace();
         }
-        uploadFile();
     }
 
     public String getFileId()
@@ -69,6 +69,11 @@ public class UploadTask implements Runnable
         params.put("datetime", detect.getDatetime());
         Log.e("TAG",params.toString());
         File file = detect.getRecordfile();
+        if (file == null)
+        {
+            Log.e(TAG,"file is null");
+            return;
+        }
         OkHttpUtils.post().url(url).params(params).addFile("recordfile", file.getName(),file).build().execute(new ServerCallBack()
         {
             @Override

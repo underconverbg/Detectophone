@@ -14,7 +14,8 @@ import java.io.File;
  * Created by user on 2017/3/2.
  */
 
-public class OutgoingCallReciver extends BroadcastReceiver {
+public class OutgoingCallReciver extends BroadcastReceiver
+{
     static final String TAG = "OutgoingCallReciver";
     private MyRecorder recorder;
 
@@ -60,7 +61,6 @@ public class OutgoingCallReciver extends BroadcastReceiver {
 //            }
 //        }
     }
-
 }
 
 
