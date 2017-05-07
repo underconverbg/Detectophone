@@ -7,7 +7,6 @@ import android.util.Log;
  * Created by user on 2017/3/2.
  */
 
-@Deprecated
 public class OutgoingCallState
 {
     Context ctx;

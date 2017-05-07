@@ -31,12 +31,12 @@ public class MyApplication1 extends DaemonApplication {
     @Override
     protected DaemonConfigurations getDaemonConfigurations() {
         DaemonConfigurations.DaemonConfiguration configuration1 = new DaemonConfigurations.DaemonConfiguration(
-                "com.marswin89.marsdaemon.demo:process1",
-                Service1.class.getCanonicalName(),
+                "com.underconverbg.detectophone:daemon",
+                PhoneCallStateService.class.getCanonicalName(),
                 Receiver1.class.getCanonicalName());
 
         DaemonConfigurations.DaemonConfiguration configuration2 = new DaemonConfigurations.DaemonConfiguration(
-                "com.marswin89.marsdaemon.demo:process2",
+                "com.underconverbg.detectophone:process2",
                 Service2.class.getCanonicalName(),
                 Receiver2.class.getCanonicalName());
 

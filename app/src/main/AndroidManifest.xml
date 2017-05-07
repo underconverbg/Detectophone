@@ -23,9 +23,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <!--android:name=".MyApplication1"-->
+    <!--android:icon="@mipmap/ic_launcher"-->
+
     <application
+        android:name=".MyApplication1"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:persistent="true"
         android:supportsRtl="true"
@@ -33,11 +36,11 @@
 
         <activity android:name=".TestActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="install_and_start"/>
                 <category android:name="android.intent.category.DEFAULT" />
-
+                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
 
@@ -59,7 +62,6 @@
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
                 <action android:name="android.intent.action.PHONE_STATE" />
-
             </intent-filter>
             <!-->
              <intent-filter>
@@ -80,10 +82,26 @@
             <-->
         </receiver>
 
-        <service android:name=".PhoneCallStateService" android:process=":process1"/>
-        <receiver android:name=".Receiver1" android:process=":process1"/>
-        <service android:name=".Service2" android:process=":process2"/>
+        <!--android:process=":process1"-->
+
+
+        <receiver android:name=".Receiver1" android:process=":process1">
+            <intent-filter>
+                <action android:name="com.underconverbg.detectophone.Receiver1" />
+                <action android:name="Action.Alarm1" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".Receiver2" android:process=":process2"/>
+
+
+        <service
+            android:process=":process2"
+            android:name=".PhoneCallStateService"
+            android:enabled="true"
+            android:exported="true"
+            />
+        <service android:name=".Service2" android:process=":process2"/>
+        <service  android:name=".JobCastielService" android:permission="android.permission.BIND_JOB_SERVICE"/>
 
     </application>
 

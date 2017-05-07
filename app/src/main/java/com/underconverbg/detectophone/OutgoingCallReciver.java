@@ -31,11 +31,23 @@ public class OutgoingCallReciver extends BroadcastReceiver
         Log.e(TAG, "广播接收者的Action："+phoneState);
         if (phoneState.equals(Intent.ACTION_NEW_OUTGOING_CALL))
         {
-            String phoneNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);//拨出号码
-            recorder.setPhoneNumber(phoneNum);
+//            String phoneNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);//拨出号码
+            String outgoing_number = intent.getStringExtra("android.intent.extra.PHONE_NUMBER");
+
+            if (outgoing_number != null)
+            {
+                outgoing_number = outgoing_number.trim();
+            }
+
+            if (outgoing_number != null && !("").equals(outgoing_number) && !("null").equals(outgoing_number))
+            {
+                recorder.setPhoneCallNumber(""+outgoing_number);
+                Log.e(TAG, "设置为去电状态");
+                Log.e(TAG, "去电状态 呼叫：" + outgoing_number);
+            }
+
             recorder.setIsCommingNumber(false);
-            Log.e(TAG, "设置为去电状态");
-            Log.e(TAG, "去电状态 呼叫：" + phoneNum);
+
         }
 
 //        if (phoneState.equals(OutgoingCallState.ForeGroundCallState.DIALING)) {

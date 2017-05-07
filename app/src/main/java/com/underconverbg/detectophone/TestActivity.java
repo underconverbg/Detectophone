@@ -1,6 +1,9 @@
 package com.underconverbg.detectophone;
 
 import android.Manifest;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -143,15 +146,30 @@ public class TestActivity extends AppCompatActivity {
 
     private void insertDummyContact()
     {
-//        Intent intent = new Intent();
-//        //设置Intent的Action属性
-//        intent.setAction("com.underconverbg.detectophone.BootReceiver");
-//        //如果只传一个bundle的信息，可以不包bundle，直接放在intent里
-//        //发送广播
-//        sendBroadcast(intent);
+        //1
+        Intent intent = new Intent();
+        //设置Intent的Action属性
+        intent.setAction("com.underconverbg.detectophone.BootReceiver");
+        //如果只传一个bundle的信息，可以不包bundle，直接放在intent里
+        //发送广播
+        sendBroadcast(intent);
 
-//        finish();
+        //2
         Log.e("~~~~","insertDummyContact");
         startService(new Intent(TestActivity.this, PhoneCallStateService.class));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(getPackageName(), JobCastielService.class.getName()))
+                    .setPeriodic(2000)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setRequiresCharging(true)// 设置是否充电的条件,默认false
+                    .setRequiresDeviceIdle(true)// 设置手机是否空闲的条件,默认false
+                    .setPersisted(true)//
+                    .build();
+
+            jobScheduler.schedule(jobInfo);
+        }
     }
 }

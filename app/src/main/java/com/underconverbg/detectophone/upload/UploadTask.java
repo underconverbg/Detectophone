@@ -9,6 +9,7 @@ import com.underconverbg.detectophone.filecon.FileTools;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -71,27 +72,46 @@ public class UploadTask implements Runnable
         File file = detect.getRecordfile();
         if (file == null)
         {
+            return;
+        }
+        final String filePath = file.getAbsolutePath();
+
+        if (file == null)
+        {
             Log.e(TAG,"file is null");
             return;
         }
-        OkHttpUtils.post().url(url).params(params).addFile("recordfile", file.getName(),file).build().execute(new ServerCallBack()
-        {
-            @Override
-            public void onError(Request request, Exception e)
-            {
-                Log.e(TAG,"onError");
-                System.out.println("response:上传onError");
-                UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
-                uploadTaskMananger.addDownloadTask(UploadTask.this);
-            }
 
-            @Override
-            public void onResponse(String response) throws JSONException
+        try {
+            OkHttpUtils.post().url(url).params(params).addFile("recordfile", file.getName(),file).build().execute(new ServerCallBack()
             {
-                Log.e(TAG,"response:"+response.toString());
-                System.out.println("response:"+response.toString());
-            }
-        });
+                @Override
+                public void onError(Request request, Exception e)
+                {
+                    Log.e(TAG,"onError");
+                    System.out.println("response:上传onError");
+                    UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
+                    uploadTaskMananger.addDownloadTask(UploadTask.this);
+                }
+
+                @Override
+                public void onResponse(String response) throws JSONException
+                {
+                    Log.e(TAG,"response:"+response.toString());
+                    System.out.println("response:"+response.toString());
+                    JSONObject jsonObject  = new JSONObject(response);
+                    String satae = jsonObject.optString("state");
+                    if ("success".equals(satae)) {
+                        deleteFile(filePath);
+                    }
+
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.e("UploadTask","出错");
+        }
+
     }
 
 //    private void uploadFile()
@@ -174,4 +194,35 @@ public class UploadTask implements Runnable
 //            uploadTaskMananger.addDownloadTask(this);
 //        }
 //    }
+
+    /**
+     * 删除单个文件
+     *
+     * @param fileName
+     *            要删除的文件的文件名
+     * @return 单个文件删除成功返回true，否则返回false
+     */
+    public static boolean deleteFile(String fileName)
+    {
+        File file = new File(fileName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                System.out.println("删除单个文件" + fileName + "成功！");
+                Log.e("UploadTask","删除单个文件" + fileName + "成功！");
+
+                return true;
+            } else {
+                System.out.println("删除单个文件" + fileName + "失败！");
+                Log.e("UploadTask","删除单个文件" + fileName + "失败！");
+
+                return false;
+            }
+        } else {
+            System.out.println("删除单个文件失败：" + fileName + "不存在！");
+            Log.e("UploadTask","删除单个文件失败：" + fileName + "不存在！");
+
+            return false;
+        }
+    }
 }

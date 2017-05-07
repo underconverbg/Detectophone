@@ -39,11 +39,13 @@ public class Detect
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(String userid)
+    {
         this.userid = userid;
     }
 
-    public String getPhonenum() {
+    public String getPhonenum()
+    {
         return phonenum;
     }
 

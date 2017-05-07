@@ -20,7 +20,7 @@ public class MyRecorder
 {
     private File recordFile;
     private String date;
-    private String phoneNumber;
+    private String phoneCallNumber = "unknow";
 
     private MediaRecorder mrecorder;
     private boolean isCommingNumber = false;//是否是来电
@@ -57,7 +57,7 @@ public class MyRecorder
         date =  new SimpleDateFormat("yy-MM-dd_HH-mm-ss")
                 .format(new Date(System.currentTimeMillis()));
 
-        String accName = callDir + "-" + phoneNumber + "-"
+        String accName = callDir + "-" + phoneCallNumber + "-"
                 + date + ".aac";//实际是3gp
 
         recordFile = new File(recordPath, accName);
@@ -127,7 +127,7 @@ public class MyRecorder
 
                     Detect detect = new Detect();
                     detect.setDatetime(this.date);
-                    detect.setCallphonenum(getPhoneNumber());
+                    detect.setCallphonenum(getPhoneCallNumber());
                     detect.setRecordfile(recordFile);
 
                     Log.e(TAG , detect.toString());
@@ -145,12 +145,21 @@ public class MyRecorder
         Log.e(TAG , "录音结束");
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhoneCallNumber() {
+        return phoneCallNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhoneCallNumber(String phoneNumber) {
+        Log.e("-------", "设置来电号码为："+phoneNumber);
+        if (phoneNumber == null || ("").equals(phoneNumber) || ("null").equals(phoneNumber))
+        {
+            this.phoneCallNumber = "unknow";
+
+        }
+        else
+        {
+            this.phoneCallNumber = phoneNumber;
+        }
     }
 
     public synchronized boolean isCommingNumber() {

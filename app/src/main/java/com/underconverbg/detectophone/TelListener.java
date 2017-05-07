@@ -37,13 +37,23 @@ public class TelListener  extends PhoneStateListener
 
         switch (state) {
             case TelephonyManager.CALL_STATE_RINGING: // 来电响铃
-                Log.e(LOG_TAG, "CALL_STATE_RINGING :"+"来电");
+                Log.e(LOG_TAG, "CALL_STATE_RINGING :"+"来电号码："+incomingNumber);
                 if (recorder != null)
                 {
                     recorder.stop();
                     Log.e(LOG_TAG, "来电CALL_STATE_RINGING :"+"录音停止");
                 }
-                recorder.setPhoneNumber(incomingNumber);
+
+                if (incomingNumber != null)
+                {
+                    incomingNumber = incomingNumber.trim();
+                }
+
+                if (incomingNumber != null && !("").equals(incomingNumber) && !("null").equals(incomingNumber))
+                {
+                    recorder.setPhoneCallNumber(incomingNumber);
+                }
+                recorder.setPhoneCallNumber(incomingNumber);
                 recorder.setIsCommingNumber(true);
 
                 break;
