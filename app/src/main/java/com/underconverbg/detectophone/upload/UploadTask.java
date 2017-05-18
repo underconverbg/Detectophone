@@ -3,9 +3,11 @@ package com.underconverbg.detectophone.upload;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.underconverbg.detectophone.PersonService;
 import com.underconverbg.detectophone.ServerCallBack;
 import com.underconverbg.detectophone.bean.Detect;
 import com.underconverbg.detectophone.filecon.FileTools;
+import com.underconverbg.detectophone.system.SystemSet;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
@@ -68,7 +70,10 @@ public class UploadTask implements Runnable
         params.put("phonenum", detect.getPhonenum());
         params.put("callphonenum",detect.getCallphonenum());
         params.put("datetime", detect.getDatetime());
-        Log.e("TAG",params.toString());
+        params.put("recordtime", detect.getRecordtime());
+        params.put("type", detect.getType());
+
+        Log.e(TAG,params.toString());
         File file = detect.getRecordfile();
         if (file == null)
         {
@@ -101,15 +106,29 @@ public class UploadTask implements Runnable
                     System.out.println("response:"+response.toString());
                     JSONObject jsonObject  = new JSONObject(response);
                     String satae = jsonObject.optString("state");
-                    if ("success".equals(satae)) {
+                    if ("success".equals(satae))
+                    {
                         deleteFile(filePath);
-                    }
+                        PersonService service = SystemSet.getIntance().getPersonService();
+                        service.delete(filePath);
+                        Log.e(TAG,"删除成功");
 
+                    }
+                    else
+                    {
+                        UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
+                        uploadTaskMananger.addDownloadTask(UploadTask.this);
+                    }
                 }
             });
-        }catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.e("UploadTask","出错");
+            deleteFile(filePath);
+            PersonService service = SystemSet.getIntance().getPersonService();
+            service.delete(filePath);
+
         }
 
     }

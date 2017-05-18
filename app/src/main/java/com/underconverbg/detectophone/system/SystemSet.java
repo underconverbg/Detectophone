@@ -3,6 +3,8 @@ package com.underconverbg.detectophone.system;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import com.underconverbg.detectophone.PersonService;
+
 /**
  * Created by user on 2017/4/10.
  */
@@ -10,6 +12,8 @@ import android.telephony.TelephonyManager;
 public class SystemSet
 {
     static  SystemSet systemSet;
+
+    private PersonService mgr;
 
     public static SystemSet getIntance()
     {
@@ -29,6 +33,7 @@ public class SystemSet
         tel = tm.getLine1Number();//手机号码
         imei = tm.getSimSerialNumber();
         imsi = tm.getSubscriberId();
+        mgr = new PersonService(context);
     }
 
     public String getDeviceid() {
@@ -68,5 +73,9 @@ public class SystemSet
     public String imei;
     public String imsi;
 
+    public PersonService getPersonService()
+    {
+        return mgr;
+    }
 
 }

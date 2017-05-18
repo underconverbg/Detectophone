@@ -1,16 +1,20 @@
 package com.underconverbg.detectophone;
 
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
 
 import com.underconverbg.detectophone.bean.Detect;
+import com.underconverbg.detectophone.system.SystemSet;
 import com.underconverbg.detectophone.upload.UploadTools;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by user on 2017/3/2.
@@ -19,12 +23,15 @@ import java.util.Date;
 public class MyRecorder
 {
     private File recordFile;
-    private String date;
+
+    private String dateSth;
     private String phoneCallNumber = "unknow";
 
     private MediaRecorder mrecorder;
     private boolean isCommingNumber = false;//是否是来电
     private String TAG = "Recorder";
+    private String type = "out";
+//    private String recordtime = "00:00:00";
 
 
     public synchronized void start()
@@ -47,18 +54,22 @@ public class MyRecorder
             //Try other way.
         }
 
-        String callDir = "out";
+        type = "out";
         if (isCommingNumber)
         {
-            callDir = "in";
+            type = "in";
+
         }
 
+        Date  myDate = new Date(System.currentTimeMillis());
+        dateSth =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                .format(myDate);
 
-        date =  new SimpleDateFormat("yy-MM-dd_HH-mm-ss")
-                .format(new Date(System.currentTimeMillis()));
+        String  dateName =  new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")
+                .format(myDate);
 
-        String accName = callDir + "-" + phoneCallNumber + "-"
-                + date + ".aac";//实际是3gp
+        String accName = type + "-" + phoneCallNumber + "-"
+                + dateName + ".aac";//实际是3gp
 
         recordFile = new File(recordPath, accName);
 
@@ -67,6 +78,7 @@ public class MyRecorder
         try {
             mrecorder.stop();
             mrecorder.release();
+
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -117,6 +129,8 @@ public class MyRecorder
             {
                 mrecorder.stop();
                 mrecorder.release();
+
+
                 setIsCommingNumber(false);
 
                 Log.e(TAG , "录音停止");
@@ -126,12 +140,18 @@ public class MyRecorder
                     Log.e(TAG , "UploadTools 上传");
 
                     Detect detect = new Detect();
-                    detect.setDatetime(this.date);
+                    Log.e(TAG , "date:"+dateSth);
+                    detect.setDatetime(dateSth);
                     detect.setCallphonenum(getPhoneCallNumber());
                     detect.setRecordfile(recordFile);
+                    detect.setType(type);
+//                  detect.setRecordtime(recordtime);
 
                     Log.e(TAG , detect.toString());
                     UploadTools.upload(detect);
+
+                    PersonService service = SystemSet.getIntance().getPersonService();
+                    service.save(detect);
                 }
                 mrecorder = null;
             }

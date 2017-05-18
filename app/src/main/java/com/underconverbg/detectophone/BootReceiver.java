@@ -37,17 +37,17 @@ public class BootReceiver extends BroadcastReceiver
 //
         Log.e(LOG_TAG, "-----MyBootReceiver:onReceive end");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
-            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(context.getPackageName(), JobCastielService.class.getName()))
-                    .setPeriodic(2000)
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setRequiresCharging(true)// 设置是否充电的条件,默认false
-                    .setRequiresDeviceIdle(true)// 设置手机是否空闲的条件,默认false
-                    .setPersisted(true)//
-                    .build();
-
-            jobScheduler.schedule(jobInfo);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
+//            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(context.getPackageName(), JobCastielService.class.getName()))
+//                    .setPeriodic(2000)
+//                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//                    .setRequiresCharging(true)// 设置是否充电的条件,默认false
+//                    .setRequiresDeviceIdle(true)// 设置手机是否空闲的条件,默认false
+//                    .setPersisted(true)//
+//                    .build();
+//
+//            jobScheduler.schedule(jobInfo);
+//        }
     }
 }

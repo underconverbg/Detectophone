@@ -31,7 +31,7 @@ public class MyApplication1 extends DaemonApplication {
     @Override
     protected DaemonConfigurations getDaemonConfigurations() {
         DaemonConfigurations.DaemonConfiguration configuration1 = new DaemonConfigurations.DaemonConfiguration(
-                "com.underconverbg.detectophone:daemon",
+                "com.underconverbg.detectophone:process1",
                 PhoneCallStateService.class.getCanonicalName(),
                 Receiver1.class.getCanonicalName());
 
