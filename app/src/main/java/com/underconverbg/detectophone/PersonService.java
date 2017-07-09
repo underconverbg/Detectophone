@@ -3,6 +3,7 @@ package com.underconverbg.detectophone;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.underconverbg.detectophone.bean.Detect;
 
@@ -25,16 +26,19 @@ public class PersonService
 
     public void save(Detect person)
     {
+        Log.e("PersonService","save:" + person.toString());
         SQLiteDatabase db=dbOpenHelper.getWritableDatabase();
         db.execSQL("insert into detect(userid,phonenum,callphonenum,datetime,recordfilepath,type,recordtime) values(?,?,?,?,?,?,?)",new Object[]
                 {person.getUserid(),person.getPhonenum(),person.getCallphonenum(),
-                        person.getDatetime(),person.getRecordfile(),
+                        person.getDatetime(),person.getRecordFilePath(),
                         person.getType(),person.getRecordtime()});
     }
 
     public void delete(String recordfilepath){
         SQLiteDatabase db=dbOpenHelper.getWritableDatabase();
-        db.execSQL("delete from detect where recordfilepath=?",new Object[]{recordfilepath});
+         db.execSQL("delete from detect where recordfilepath=?",new Object[]{recordfilepath});
+        Log.e("delete","删除");
+
     }
 
 //    public Detect find(Integer _id){
@@ -58,7 +62,6 @@ public class PersonService
         SQLiteDatabase db=dbOpenHelper.getReadableDatabase();
         List<Detect> persons = new ArrayList<Detect>();
 
-
         Cursor cursor=db.rawQuery("select * from detect", null);
         while(cursor.moveToNext())
         {
@@ -81,6 +84,8 @@ public class PersonService
             person.setRecordtime(recordtime);
             persons.add(person);
         }
+        cursor.close();
         return persons;
+
     }
 }

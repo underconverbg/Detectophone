@@ -14,7 +14,7 @@ public class UploadTaskManagerThread  implements Runnable
     // 创建一个可重用固定线程数的线程池
     private ExecutorService pool;
     // 线程池大小
-    private final int POOL_SIZE = 5;
+    private final int POOL_SIZE = 17;
     // 轮询时间
     private final int SLEEP_TIME = 1000;
     // 是否停止

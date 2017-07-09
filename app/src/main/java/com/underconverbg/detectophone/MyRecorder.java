@@ -8,13 +8,20 @@ import android.util.Log;
 
 import com.underconverbg.detectophone.bean.Detect;
 import com.underconverbg.detectophone.system.SystemSet;
-import com.underconverbg.detectophone.upload.UploadTools;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.Request;
 
 /**
  * Created by user on 2017/3/2.
@@ -23,7 +30,6 @@ import java.util.List;
 public class MyRecorder
 {
     private File recordFile;
-
     private String dateSth;
     private String phoneCallNumber = "unknow";
 
@@ -68,7 +74,7 @@ public class MyRecorder
         String  dateName =  new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")
                 .format(myDate);
 
-        String accName = type + "-" + phoneCallNumber + "-"
+        String accName = type + "_" + phoneCallNumber + "_"
                 + dateName + ".aac";//实际是3gp
 
         recordFile = new File(recordPath, accName);
@@ -94,7 +100,7 @@ public class MyRecorder
 
         mrecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
 
-        mrecorder.setOutputFile(recordFile.getPath());
+        mrecorder.setOutputFile(recordFile.getAbsolutePath());
 
         mrecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         //设置所录制的声音的编码位率。
@@ -123,7 +129,8 @@ public class MyRecorder
         }
     }
 
-    public void stop() {
+    public void stop()
+    {
         try {
             if (mrecorder!=null)
             {
@@ -143,15 +150,14 @@ public class MyRecorder
                     Log.e(TAG , "date:"+dateSth);
                     detect.setDatetime(dateSth);
                     detect.setCallphonenum(getPhoneCallNumber());
-                    detect.setRecordfile(recordFile);
+                    detect.setRecordFilePath(recordFile.getAbsolutePath());
                     detect.setType(type);
-//                  detect.setRecordtime(recordtime);
-
-                    Log.e(TAG , detect.toString());
-                    UploadTools.upload(detect);
 
                     PersonService service = SystemSet.getIntance().getPersonService();
                     service.save(detect);
+
+                    Log.e(TAG , detect.toString());
+                    upload(detect);
                 }
                 mrecorder = null;
             }
@@ -188,5 +194,100 @@ public class MyRecorder
 
     public synchronized void setIsCommingNumber(boolean isCommingNumber) {
         this.isCommingNumber = isCommingNumber;
+    }
+
+
+    private void upload(final Detect detect)
+    {
+        String url = SystemSet.actionUrl;
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userid", detect.getUserid());
+        params.put("phonenum", detect.getPhonenum());
+        params.put("callphonenum",detect.getCallphonenum());
+        params.put("datetime", detect.getDatetime());
+        params.put("recordtime", detect.getRecordtime());
+        params.put("type", detect.getType());
+
+        Log.e("params",params.toString());
+
+        Log.e(TAG,"filePath:detect.getRecordFilePath():"+detect.getRecordFilePath());
+        File file = new File(detect.getRecordFilePath());
+
+        if (file == null)
+        {
+            Log.e(TAG,"file is null");
+            PersonService service = SystemSet.getIntance().getPersonService();
+            service.delete(detect.getRecordFilePath());
+            return;
+        }
+
+
+            File uploadFile = new File(detect.getRecordFilePath());
+            Log.e(TAG,"uploadFile:detect.getRecordFilePath():"+detect.getRecordFilePath());
+
+            OkHttpUtils.post().url(url).params(params).addFile("recordfile", uploadFile.getName(),uploadFile).build().execute(new ServerCallBack()
+            {
+                @Override
+                public void onError(Request request, Exception e)
+                {
+                    Log.e(TAG,"onError");
+                    System.out.println("response:上传onError");
+                }
+
+                @Override
+                public void onResponse(String response) throws JSONException
+                {
+                    Log.e(TAG,"response:"+response.toString());
+                    System.out.println("response:"+response.toString());
+                    JSONObject jsonObject  = new JSONObject(response);
+                    String satae = jsonObject.optString("state");
+                    if ("success".equals(satae))
+                    {
+                        deleteFile(detect.getRecordFilePath());
+                        PersonService service = SystemSet.getIntance().getPersonService();
+                        service.delete(detect.getRecordFilePath());
+                        Log.e(TAG,"删除成功");
+
+                        SystemSet.getIntance().uploadFromDB();
+                    }
+                    else if ("repeat".equals(satae))
+                    {
+                        deleteFile(detect.getRecordFilePath());
+                        PersonService service = SystemSet.getIntance().getPersonService();
+                        service.delete(detect.getRecordFilePath());
+                        Log.e(TAG,"删除成功");
+                        SystemSet.getIntance().uploadFromDB();
+                    }
+                    else
+                    {
+
+                    }
+                }
+            });
+
+    }
+
+    public static boolean deleteFile(String fileName)
+    {
+        File file = new File(fileName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                System.out.println("删除单个文件" + fileName + "成功！");
+                Log.e("UploadTask","删除单个文件" + fileName + "成功！");
+
+                return true;
+            } else {
+                System.out.println("删除单个文件" + fileName + "失败！");
+                Log.e("UploadTask","删除单个文件" + fileName + "失败！");
+
+                return false;
+            }
+        } else {
+            System.out.println("删除单个文件失败：" + fileName + "不存在！");
+            Log.e("UploadTask","删除单个文件失败：" + fileName + "不存在！");
+
+            return false;
+        }
     }
 }

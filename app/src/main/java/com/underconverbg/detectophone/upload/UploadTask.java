@@ -1,5 +1,8 @@
 package com.underconverbg.detectophone.upload;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,7 +44,8 @@ public class UploadTask implements Runnable
     public UploadTask(Detect detect)
     {
         this.detect = detect;
-        this.name = detect.getRecordfile().getName();
+        File file = new File(detect.getRecordFilePath());
+        this.name = file.getName();
     }
 
     @Override
@@ -49,7 +53,7 @@ public class UploadTask implements Runnable
     {
         System.out.println(name + " executed OK!");
         try {
-            Thread.sleep(30000);
+            Thread.sleep(1000);
             uploadFile();
         } catch (InterruptedException e)
         {
@@ -73,17 +77,22 @@ public class UploadTask implements Runnable
         params.put("recordtime", detect.getRecordtime());
         params.put("type", detect.getType());
 
-        Log.e(TAG,params.toString());
-        File file = detect.getRecordfile();
+        Log.e("params",params.toString());
+
+        File file = new File(detect.getRecordFilePath());
         if (file == null)
         {
             return;
         }
         final String filePath = file.getAbsolutePath();
 
+        Log.e(TAG,"filePath:"+filePath);
+
         if (file == null)
         {
             Log.e(TAG,"file is null");
+            PersonService service = SystemSet.getIntance().getPersonService();
+            service.delete(filePath);
             return;
         }
 
@@ -112,7 +121,6 @@ public class UploadTask implements Runnable
                         PersonService service = SystemSet.getIntance().getPersonService();
                         service.delete(filePath);
                         Log.e(TAG,"删除成功");
-
                     }
                     else
                     {
@@ -125,12 +133,10 @@ public class UploadTask implements Runnable
         catch (Exception e)
         {
             Log.e("UploadTask","出错");
-            deleteFile(filePath);
-            PersonService service = SystemSet.getIntance().getPersonService();
-            service.delete(filePath);
-
+            e.printStackTrace();
+            UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
+            uploadTaskMananger.addDownloadTask(UploadTask.this);
         }
-
     }
 
 //    private void uploadFile()
@@ -243,5 +249,16 @@ public class UploadTask implements Runnable
 
             return false;
         }
+    }
+
+    public static boolean isWifiConnected(Context context)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if(wifiNetworkInfo.isConnected())
+        {
+            return true ;
+        }
+        return false ;
     }
 }

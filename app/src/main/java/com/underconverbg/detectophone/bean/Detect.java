@@ -17,14 +17,13 @@ import java.util.TimeZone;
 
 public class Detect
 {
-    String userid;
-    String phonenum;
-    String callphonenum;
-    String datetime;
-    File recordfile;
-    String type = "out";
-    String recordtime = "00:00:00";
-    private String recordFilePath;
+    private String userid="unknow";
+    private String phonenum="unknow";
+    private String callphonenum="unknow";
+    private String datetime="unknow";
+    private String type = "out";
+    private String recordtime = "00:00:00";
+    private String recordFilePath ="unknow";
 
     @Override
     public String toString()
@@ -34,16 +33,16 @@ public class Detect
                 ", phonenum='" + phonenum + '\'' +
                 ", callphonenum='" + callphonenum + '\'' +
                 ", datetime='" + datetime + '\'' +
-                ", recordfile=" + recordfile +
                 ", type='" + type + '\'' +
                 ", recordtime='" + recordtime + '\'' +
+                ", recordFilePath=" + recordFilePath +
                 '}';
     }
 
     public  Detect()
     {
         userid = SystemSet.getIntance().getDeviceid();
-        phonenum = SystemSet.getIntance().getTel();
+        phonenum = ""+SystemSet.getIntance().getTel();
     }
 
     public String getRecordtime() {
@@ -51,42 +50,85 @@ public class Detect
     }
     public void setRecordtime(String recordtime)
     {
-        this.recordtime = recordtime;
+            if (recordtime != null) {
+            this.recordtime = recordtime;
+        }
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
     public void setType(String type)
     {
-        this.type = type;
+        if (type != null)
+        {
+            this.type = type;
+        }
     }
 
 
-    public String getUserid() {
-        return userid;
+    public String getUserid()
+    {
+        String  nowuserid = SystemSet.getIntance().getDeviceid();
+        if (null == nowuserid ||nowuserid.equals("")||nowuserid.equals("null")||nowuserid.length()<=0)
+        {
+            userid = "unknow";
+        }
+        else
+        {
+            userid = nowuserid;
+        }return userid;
     }
 
     public void setUserid(String userid)
     {
-        this.userid = userid;
+        if (userid != null && !userid.equals("")&& !userid.equals("null")&& userid.length()>0)
+        {
+            this.userid = userid;
+        }
+        else
+        {
+            this.phonenum = "unknow";
+        }
     }
 
     public String getPhonenum()
     {
-        return phonenum;
+            String nowTel = SystemSet.getIntance().getTel();
+            if (null == nowTel ||nowTel.equals("")||nowTel.equals("null")||nowTel.length()<=0)
+            {
+                this.phonenum = "unknow";
+            }
+            else
+            {
+                this.phonenum = nowTel;
+            }
+            return phonenum;
     }
 
-    public void setPhonenum(String phonenum) {
-        this.phonenum = phonenum;
+    public void setPhonenum(String phonenum)
+    {
+        if (phonenum != null && !phonenum.equals("")&& !phonenum.equals("null")&& phonenum.length()>0)
+        {
+            this.phonenum = ""+phonenum;
+        }
+        else
+        {
+            this.phonenum = "unknow";
+        }
     }
 
     public String getCallphonenum() {
         return callphonenum;
     }
 
-    public void setCallphonenum(String callphonenum) {
-        this.callphonenum = callphonenum;
+    public void setCallphonenum(String callphonenumsth)
+    {
+        if (callphonenumsth != null && !callphonenumsth.equals("")&& !callphonenumsth.equals("null")&& callphonenumsth.length()>0)
+        {
+            this.callphonenum = callphonenumsth;
+        }
     }
 
     public String getDatetime()
@@ -94,34 +136,32 @@ public class Detect
         return datetime;
     }
 
-    public void setDatetime(String datetime)
+    public void setDatetime(String datetimesth)
     {
-        this.datetime = datetime;
+        if (datetimesth != null && !datetimesth.equals("")&& !datetimesth.equals("null")&& datetimesth.length()>0)
+        {
+            this.datetime = datetimesth;
+        }
     }
 
-    public File getRecordfile() {
-        return recordfile;
-    }
 
     public String getRecordFilePath() {
         return recordFilePath;
     }
 
-    public void setRecordFilePath(String recordFilePath ) {
-        this.recordFilePath = recordFilePath;
-        recordfile = new File(recordFilePath);
-    }
-
-
-    public void setRecordfile(File recordfile)
+    public void setRecordFilePath(String recordFilePath )
     {
-        this.recordfile = recordfile;
+        if (recordFilePath == null)
+        {
+            return;
+        }
+        Log.e("Detect","setRecordFilePath:"+recordFilePath);
 
-        recordFilePath = recordfile.getAbsolutePath();
+        this.recordFilePath = recordFilePath;
 
         MediaPlayer player = new MediaPlayer();
         try {
-            player.setDataSource(recordfile.getAbsolutePath());  //recordingFilePath（）为音频文件的路径
+            player.setDataSource(recordFilePath);  //recordingFilePath（）为音频文件的路径
             player.prepare();
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,6 +184,8 @@ public class Detect
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         recordtime = df.format(duration);
-
     }
+
+
+
 }

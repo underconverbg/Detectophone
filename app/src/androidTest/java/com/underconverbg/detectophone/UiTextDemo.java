@@ -44,7 +44,7 @@ public class UiTextDemo {
                         .format(new Date(System.currentTimeMillis())));
         detect.setCallphonenum("13750044903");
         String FirstFolder = Environment.getExternalStorageDirectory().getPath();
-        detect.setRecordfile(new File(getInnerSDCardPath()+"/luyin20170302113849.3gp"));
+//        detect.setRecordfile(new File(getInnerSDCardPath()+"/luyin20170302113849.3gp"));
         UploadTask task =   new UploadTask(detect);
     }
 
@@ -67,7 +67,7 @@ public class UiTextDemo {
                     .format(new Date(System.currentTimeMillis())));
             detect.setCallphonenum("13750044903");
             String FirstFolder = Environment.getExternalStorageDirectory().getPath();
-            detect.setRecordfile(new File(getInnerSDCardPath() + "/luyin20170302113849.3gp"));
+//            detect.setRecordfile(new File(getInnerSDCardPath() + "/luyin20170302113849.3gp"));
             UploadTask task = new UploadTask(detect);
             UploadTaskManager.getInstance().addDownloadTask(task);
         }

@@ -30,6 +30,8 @@ public  class UploadTools
     public static void upload(Detect detect)
     {
         Log.e("UploadTools", "upload");
+        Log.e("UploadTools", "upload:"+detect.toString());
+
         UploadTask task =   new UploadTask(detect);
         UploadTaskManager uploadTaskMananger = UploadTaskManager.getInstance();
         uploadTaskMananger.addDownloadTask(task);

@@ -1,5 +1,7 @@
 package com.zhy.http.okhttp.request;
 
+import android.util.Log;
+
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.Callback;
@@ -100,8 +102,10 @@ public class PostFormRequest extends OkHttpRequest
         {
             for (String key : params.keySet())
             {
+                Log.e("PostFormRequest","key:"+key);
+                Log.e("","key:"+params.keySet());
                 builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
-                        RequestBody.create(null, params.get(key)));
+                RequestBody.create(null, params.get(key)));
             }
         }
     }
