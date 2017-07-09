@@ -68,7 +68,7 @@ public class SystemSet
                 }
                 else
                 {
-                    if (null != iddeviceid && !iddeviceid.equals("")&& !iddeviceid.equals("null")||iddeviceid.length()>0) {
+                    if (null != iddeviceid && !iddeviceid.equals("")&& !iddeviceid.equals("null") && iddeviceid.length()>0) {
                         deviceid = new String(iddeviceid);
                     }
                     else
