@@ -65,6 +65,8 @@ public class TestActivity extends AppCompatActivity {
             permissionsNeeded.add("WRITE_CONTACTS");
         if (!addPermission(permissionsList, Manifest.permission.RECEIVE_BOOT_COMPLETED))
             permissionsNeeded.add("RECEIVE_BOOT_COMPLETED");
+        if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
+            permissionsNeeded.add("READ_PHONE_STATE");
 
         if (permissionsList.size() > 0) {
             if (permissionsNeeded.size() > 0)
@@ -117,6 +119,7 @@ public class TestActivity extends AppCompatActivity {
                 perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.RECEIVE_BOOT_COMPLETED, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
 
                 // Fill with results
                 for (int i = 0; i < permissions.length; i++)
@@ -126,6 +129,7 @@ public class TestActivity extends AppCompatActivity {
                         && perms.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.RECEIVE_BOOT_COMPLETED) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
                         )
                 {
                     // All Permissions Granted

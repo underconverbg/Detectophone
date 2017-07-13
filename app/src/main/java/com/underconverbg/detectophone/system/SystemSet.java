@@ -47,7 +47,11 @@ public class SystemSet
     {
         mycontext = context;
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        deviceid = tm.getDeviceId();
+        try {
+            deviceid = tm.getDeviceId();
+        }catch (Exception e) {
+            deviceid = "unknow";
+        }
         tel = tm.getLine1Number();//手机号码
         imei = tm.getSimSerialNumber();
         imsi = tm.getSubscriberId();
@@ -99,7 +103,7 @@ public class SystemSet
                 }
                 else
                 {
-                    if (null != idtel && !idtel.equals("")&& !idtel.equals("null")||idtel.length()>0) {
+                    if (null != idtel && !idtel.equals("")&& !idtel.equals("null") && idtel.length()>0) {
                         tel = new String(idtel);
                     }
                     else
